@@ -1,6 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const { check } = require("express-validator");
+const { Op, Sequelize } = require("sequelize");
 const { handleValidationErrors } = require("../../utils/validation");
 // const authenticate = require('../../utils/auth');
 
@@ -150,22 +151,30 @@ router.post("/signup", validateSignup, async (req, res) => {
   try {
     const { email, password, username, firstName, lastName } = req.body;
 
-    // Check if user already exists
     const existingUser = await User.findOne({
       where: {
-        email: email,
+        [Op.or]: {
+          email: email,
+          username: username,
+        },
       },
     });
 
-    if (existingUser) {
+    if (existingUser.email === email) {
       return res.status(403).json({
         message: "User already exists",
         errors: {
           email: "User with that email already exists",
         },
       });
+    } else if (existingUser.username === username) {
+      return res.status(403).json({
+        message: "User already exists",
+        errors: {
+          username: "Username already taken",
+        },
+      });
     }
-
     // Hash password with bcrypt
     const hashedPassword = await bcrypt.hash(password, 10);
 
