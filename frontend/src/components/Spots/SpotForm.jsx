@@ -73,33 +73,52 @@ function SpotForm() {
       ...formData,
       price: parseFloat(formData.price),
       lat: parseFloat(formData.lat) || 0,
-      lng: parseFloat(formData.lng) || 0,
-      images: formData.images.filter(img => img)
+      lng: parseFloat(formData.lng) || 0
     };
+
+    // Create the spot data object
+    const spotData = {
+      address: submitData.address,
+      city: submitData.city,
+      state: submitData.state,
+      country: submitData.country,
+      lat: submitData.lat,
+      lng: submitData.lng,
+      name: submitData.name,
+      description: submitData.description,
+      price: submitData.price
+    };
+
+    // Separate the images
+    const images = formData.images.filter(url => url).map(url => ({
+      url,
+      preview: true // You might want to add logic to determine which is the preview image
+    }));
 
     try {
       if (spotId) {
-        await dispatch(editSpot(spotId, submitData));
+        console.log("Updating spot with data:", spotData);
+        const updatedSpot = await dispatch(editSpot(spotId, spotData));
         navigate(`/spots/${spotId}`);
       } else {
-        const newSpot = await dispatch(createSpot(submitData));
+        console.log("Creating new spot with data:", { ...spotData, images });
+        const newSpot = await dispatch(createSpot({ ...spotData, images }));
+        if (newSpot.errors) {
+          setErrors(newSpot.errors);
+          return;
+        }
         navigate(`/spots/${newSpot.id}`);
       }
     } catch (error) {
-      setErrors({ submit: error.message });
+      console.error("Error submitting form:", error);
+      setErrors({ 
+        submit: error.message || 'An error occurred while submitting the form' 
+      });
     } finally {
       setIsLoading(false);
     }
   };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
+  
   const handleImageChange = (index, value) => {
     setFormData(prev => ({
       ...prev,
@@ -241,5 +260,7 @@ function SpotForm() {
     </div>
   );
 }
+
+
 
 export default SpotForm;

@@ -12,7 +12,7 @@ function Navigation({ isLoaded }) {
       <div className="nav-container">
         <NavLink to="/" className="home-link">
           <FaAirbnb className="logo" />
-          <span className="logo-text">airbnb</span>
+          <span className="logo-text">AtoZBnB</span>
         </NavLink>
 
         <div className="nav-right">
