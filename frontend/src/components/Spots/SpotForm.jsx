@@ -98,7 +98,7 @@ function SpotForm() {
     try {
       if (spotId) {
         console.log("Updating spot with data:", spotData);
-        const updatedSpot = await dispatch(editSpot(spotId, spotData));
+        await dispatch(editSpot(spotId, spotData));
         navigate(`/spots/${spotId}`);
       } else {
         console.log("Creating new spot with data:", { ...spotData, images });
@@ -118,7 +118,15 @@ function SpotForm() {
       setIsLoading(false);
     }
   };
-  
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
   const handleImageChange = (index, value) => {
     setFormData(prev => ({
       ...prev,
