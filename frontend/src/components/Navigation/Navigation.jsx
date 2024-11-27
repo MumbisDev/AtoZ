@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { FaAirbnb } from 'react-icons/fa';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 
@@ -7,16 +8,23 @@ function Navigation({ isLoaded }) {
   const sessionUser = useSelector(state => state.session.user);
 
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
-      </li>
-      {isLoaded && (
-        <li>
+    <nav className="navigation">
+      <div className="nav-container">
+        <NavLink to="/" className="home-link">
+          <FaAirbnb className="logo" />
+          <span className="logo-text">airbnb</span>
+        </NavLink>
+
+        <div className="nav-right">
+          {isLoaded && sessionUser && (
+            <NavLink to="/spots/new" className="create-spot-button">
+              Create a New Spot
+            </NavLink>
+          )}
           <ProfileButton user={sessionUser} />
-        </li>
-      )}
-    </ul>
+        </div>
+      </div>
+    </nav>
   );
 }
 

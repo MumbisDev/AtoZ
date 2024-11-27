@@ -1,0 +1,103 @@
+.review-modal {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .review-modal h2 {
+    margin: 0 0 20px 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #222222;
+  }
+  
+  .stars-container {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+  
+  .star-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 24px;
+    color: #dddddd;
+    transition: color 0.2s;
+  }
+  
+  .star-button.filled {
+    color: #ff385c;
+  }
+  
+  .star-button:hover {
+    transform: scale(1.1);
+  }
+  
+  .stars-container span {
+    margin-left: 8px;
+    color: #717171;
+  }
+  
+  .review-modal textarea {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    resize: vertical;
+  }
+  
+  .review-modal textarea:focus {
+    outline: none;
+    border-color: #222222;
+  }
+  
+  .review-modal textarea.error {
+    border-color: #ff385c;
+  }
+  
+  .error-message {
+    color: #ff385c;
+    font-size: 14px;
+    margin: -12px 0 16px 0;
+  }
+  
+  .submit-review-button {
+    width: 100%;
+    padding: 14px;
+    background-color: #ff385c;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .submit-review-button:disabled {
+    background-color: #dddddd;
+    cursor: not-allowed;
+  }
+  
+  .submit-review-button:hover:not(:disabled) {
+    background-color: #e31c5f;
+  }
+  
+  /* Optional animation for star hover effect */
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  .star-button:hover {
+    animation: pulse 0.3s ease-in-out;
+  }
