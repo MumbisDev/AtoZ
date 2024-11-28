@@ -35,11 +35,17 @@ const removeSpot = (spotId) => ({
 
 // Thunk Action Creators
 export const fetchSpots = () => async (dispatch) => {
-  const response = await csrfFetch("/api/spots");
-  if (response.ok) {
-    const spots = await response.json();
-    dispatch(loadSpots(spots));
-    return spots;
+  try {
+    const response = await csrfFetch("/api/spots");
+    if (response.ok) {
+      const data = await response.json();
+      // Check if the spots are in a Spots property or directly in the response
+      const spots = data.Spots || data;
+      dispatch(loadSpots(spots));
+      return spots;
+    }
+  } catch (error) {
+    console.error("Error fetching spots:", error);
   }
 };
 
@@ -93,6 +99,8 @@ export const deleteSpot = (spotId) => async (dispatch) => {
 const initialState = {
   allSpots: {},
   singleSpot: null,
+  isLoading: false,
+  error: null,
 };
 
 // Reducer
@@ -106,6 +114,8 @@ const spotsReducer = (state = initialState, action) => {
       return {
         ...state,
         allSpots,
+        isLoading: false,
+        error: null,
       };
     }
     case LOAD_SPOT_DETAILS:
