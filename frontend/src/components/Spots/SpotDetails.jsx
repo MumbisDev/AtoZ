@@ -12,7 +12,8 @@ function SpotDetails() {
   const navigate = useNavigate();
   const { spotId } = useParams();
   const sessionUser = useSelector(state => state.session.user);
-  const spot = useSelector(state => state.spots.singleSpot);
+  const spotData = useSelector(state => state.spots.singleSpot);
+  const spot = spotData?.spot || spotData; // Handle both nested and direct data
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
@@ -20,30 +21,22 @@ function SpotDetails() {
   useEffect(() => {
     const loadSpotData = async () => {
       try {
-        console.log("Fetching spot details for ID:", spotId);
-        const spotResponse = await dispatch(fetchSpotDetails(spotId));
-        console.log("Spot details response:", spotResponse);
-        
-        if (spotResponse) {
-          await dispatch(fetchSpotReviews(spotId));
-        }
+        await dispatch(fetchSpotDetails(spotId));
+        await dispatch(fetchSpotReviews(spotId));
+        setIsLoaded(true);
       } catch (err) {
         console.error("Error loading spot details:", err);
         setError("Failed to load spot details");
-      } finally {
         setIsLoaded(true);
       }
     };
     
-    setIsLoaded(false);
     loadSpotData();
   }, [dispatch, spotId]);
 
   if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!spot) return <div>Spot not found</div>;
-
-  console.log("Current spot data:", spot); // Debug log
 
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
@@ -61,39 +54,29 @@ function SpotDetails() {
 
   return (
     <div className="spot-details">
-      <h1>{spot.name || 'Loading...'}</h1>
+      <h1>{spot.name}</h1>
       <div className="spot-location">
         {spot.city}, {spot.state}, {spot.country}
       </div>
 
-      <div className="spot-images">
-        {spot.SpotImages && spot.SpotImages.map((image, index) => (
-          <img 
-            key={index}
-            src={image.url} 
-            alt={`${spot.name} ${index + 1}`}
-            className={index === 0 ? 'main-image' : 'secondary-image'}
-          />
-        ))}
-      </div>
-
       <div className="spot-info-container">
         <div className="spot-description">
-          <h2>
-            {spot.Owner ? `Hosted by ${spot.Owner.firstName} ${spot.Owner.lastName}` : 'Loading host info...'}
-          </h2>
+          {/* If Owner exists, show the host info */}
+          {spot.Owner && (
+            <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
+          )}
           <p>{spot.description}</p>
         </div>
 
         <div className="spot-booking">
           <div className="price-rating">
             <div className="price">
-              <span className="amount">${spot.price}</span> night
+              <span className="amount">${Number(spot.price).toFixed(2)}</span> night
             </div>
             <div className="rating">
               <i className="fas fa-star"></i>
               {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
-              {spot.numReviews} {spot.numReviews === 1 ? 'review' : 'reviews'}
+              {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
             </div>
           </div>
         </div>
@@ -112,7 +95,7 @@ function SpotDetails() {
           <div className="rating-summary">
             <i className="fas fa-star"></i>
             {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
-            {spot.numReviews} {spot.numReviews === 1 ? 'review' : 'reviews'}
+            {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
           </div>
           
           {sessionUser && !isOwner && !hasReviewed && (
