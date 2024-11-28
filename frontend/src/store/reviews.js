@@ -23,35 +23,51 @@ const removeReview = (reviewId) => ({
 
 // Thunk Action Creators
 export const fetchSpotReviews = (spotId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
-  if (response.ok) {
-    const reviews = await response.json();
-    dispatch(loadSpotReviews(reviews));
-    return reviews;
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+    if (response.ok) {
+      const data = await response.json();
+      console.log("Reviews API Response:", data); // Debug log
+      dispatch(loadSpotReviews(data.Reviews || [])); // Ensure we're accessing the Reviews array
+      return data.Reviews || [];
+    }
+  } catch (error) {
+    console.error("Error fetching reviews:", error);
+    return [];
   }
 };
 
 export const createReview = (spotId, reviewData) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
-    method: "POST",
-    body: JSON.stringify(reviewData),
-  });
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+      method: "POST",
+      body: JSON.stringify(reviewData),
+    });
 
-  if (response.ok) {
-    const newReview = await response.json();
-    dispatch(addReview(newReview));
-    return newReview;
+    if (response.ok) {
+      const newReview = await response.json();
+      dispatch(addReview(newReview));
+      return newReview;
+    }
+  } catch (error) {
+    console.error("Error creating review:", error);
+    throw error;
   }
 };
 
 export const deleteReview = (reviewId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/reviews/${reviewId}`, {
-    method: "DELETE",
-  });
+  try {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+      method: "DELETE",
+    });
 
-  if (response.ok) {
-    dispatch(removeReview(reviewId));
-    return true;
+    if (response.ok) {
+      dispatch(removeReview(reviewId));
+      return true;
+    }
+  } catch (error) {
+    console.error("Error deleting review:", error);
+    throw error;
   }
 };
 
@@ -65,9 +81,12 @@ const reviewsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOT_REVIEWS: {
       const spotReviews = {};
-      action.reviews.forEach((review) => {
-        spotReviews[review.id] = review;
-      });
+      // Make sure action.reviews is an array before using forEach
+      if (Array.isArray(action.reviews)) {
+        action.reviews.forEach((review) => {
+          spotReviews[review.id] = review;
+        });
+      }
       return {
         ...state,
         spot: spotReviews,

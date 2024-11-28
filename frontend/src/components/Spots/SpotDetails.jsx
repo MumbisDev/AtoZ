@@ -8,24 +8,35 @@ import CreateReviewModal from '../Reviews/CreateReviewModal';
 import './SpotDetails.css';
 
 function SpotDetails() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { spotId } = useParams();
-  const sessionUser = useSelector(state => state.session.user);
-  const spot = useSelector(state => state.spots.singleSpot);
-  const reviews = useSelector(state => Object.values(state.reviews.spot));
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    const loadSpotData = async () => {
-      await dispatch(fetchSpotDetails(spotId));
-      await dispatch(fetchSpotReviews(spotId));
-      setIsLoaded(true);
-    };
-    loadSpotData();
-  }, [dispatch, spotId]);
-
-  if (!isLoaded || !spot) return <div>Loading...</div>;
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { spotId } = useParams();
+    const sessionUser = useSelector(state => state.session.user);
+    const spot = useSelector(state => state.spots.singleSpot);
+    const reviews = useSelector(state => Object.values(state.reviews.spot));
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [error, setError] = useState(null);
+  
+    useEffect(() => {
+      const loadSpotData = async () => {
+        try {
+          const spotResponse = await dispatch(fetchSpotDetails(spotId));
+          if (spotResponse) {
+            await dispatch(fetchSpotReviews(spotId));
+          }
+        } catch (err) {
+          console.error("Error loading spot details:", err);
+          setError("Failed to load spot details");
+        } finally {
+          setIsLoaded(true);
+        }
+      };
+      loadSpotData();
+    }, [dispatch, spotId]);
+  
+    if (!isLoaded) return <div>Loading...</div>;
+    if (error) return <div className="error-message">{error}</div>;
+    if (!spot) return <div>Spot not found</div>;
 
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
