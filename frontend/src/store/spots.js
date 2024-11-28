@@ -50,11 +50,17 @@ export const fetchSpots = () => async (dispatch) => {
 };
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
-  const response = await csrfFetch(`/api/spots/${spotId}`);
-  if (response.ok) {
-    const spot = await response.json();
-    dispatch(loadSpotDetails(spot));
-    return spot;
+  try {
+    const response = await csrfFetch(`/api/spots/${spotId}`);
+    if (response.ok) {
+      const spot = await response.json();
+      console.log("Fetched spot details:", spot); // Debug log
+      dispatch(loadSpotDetails(spot));
+      return spot;
+    }
+  } catch (error) {
+    console.error("Error fetching spot details:", error);
+    throw error;
   }
 };
 
