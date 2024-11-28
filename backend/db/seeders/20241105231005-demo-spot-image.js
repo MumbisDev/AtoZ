@@ -25,7 +25,7 @@ module.exports = {
       },
       {
         spotId: 2,
-        url: "https://example.com/images/spot2_image1.jpg",
+        url: "https://media.istockphoto.com/id/471826199/photo/french-brittany-typical-house.jpg?s=2048x2048&w=is&k=20&c=Wl1ivn5jB1rg5R-j8UsDKxGQtqXDqulXy4EI6KJ874A=",
         preview: true,
         createdAt: new Date(),
         updatedAt: new Date(),
