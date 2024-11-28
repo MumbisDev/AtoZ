@@ -39,13 +39,13 @@ export const fetchSpots = () => async (dispatch) => {
     const response = await csrfFetch("/api/spots");
     if (response.ok) {
       const data = await response.json();
-      // Check if the spots are in a Spots property or directly in the response
-      const spots = data.Spots || data;
-      dispatch(loadSpots(spots));
-      return spots;
+      console.log("API Response:", data); // Debug log
+      dispatch(loadSpots(data.Spots || [])); // Ensure we're accessing the Spots array
+      return data.Spots || [];
     }
   } catch (error) {
     console.error("Error fetching spots:", error);
+    return [];
   }
 };
 
@@ -59,15 +59,20 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
 };
 
 export const createSpot = (spotData) => async (dispatch) => {
-  const response = await csrfFetch("/api/spots", {
-    method: "POST",
-    body: JSON.stringify(spotData),
-  });
+  try {
+    const response = await csrfFetch("/api/spots", {
+      method: "POST",
+      body: JSON.stringify(spotData),
+    });
 
-  if (response.ok) {
-    const newSpot = await response.json();
-    dispatch(addSpot(newSpot));
-    return newSpot;
+    if (response.ok) {
+      const newSpot = await response.json();
+      dispatch(addSpot(newSpot));
+      return newSpot;
+    }
+  } catch (error) {
+    console.error("Error creating spot:", error);
+    throw error;
   }
 };
 
@@ -99,8 +104,6 @@ export const deleteSpot = (spotId) => async (dispatch) => {
 const initialState = {
   allSpots: {},
   singleSpot: null,
-  isLoading: false,
-  error: null,
 };
 
 // Reducer
@@ -108,14 +111,15 @@ const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS: {
       const allSpots = {};
-      action.spots.forEach((spot) => {
-        allSpots[spot.id] = spot;
-      });
+      // Make sure action.spots is an array before using forEach
+      if (Array.isArray(action.spots)) {
+        action.spots.forEach((spot) => {
+          allSpots[spot.id] = spot;
+        });
+      }
       return {
         ...state,
         allSpots,
-        isLoading: false,
-        error: null,
       };
     }
     case LOAD_SPOT_DETAILS:
