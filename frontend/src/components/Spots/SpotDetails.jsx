@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchSpotDetails, deleteSpot } from '../../store/spots';
+import { fetchSpotDetails, fetchSpotImages, deleteSpot } from '../../store/spots';
 import { fetchSpotReviews, deleteReview } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
@@ -22,6 +22,7 @@ function SpotDetails() {
     const loadSpotData = async () => {
       try {
         await dispatch(fetchSpotDetails(spotId));
+        await dispatch(fetchSpotImages(spotId)); // Add this line
         await dispatch(fetchSpotReviews(spotId));
         setIsLoaded(true);
       } catch (err) {
@@ -65,6 +66,10 @@ function SpotDetails() {
             src={spot.previewImage}
             alt={spot.name}
             className="main-image"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+            }}
           />
         ) : (
           <div className="no-images">No images available</div>

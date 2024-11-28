@@ -19,9 +19,8 @@ const loadSpotDetails = (spot) => ({
   spot,
 });
 
-const loadSpotImages = (spotId, images) => ({
+const loadSpotImages = (images) => ({
   type: LOAD_SPOT_IMAGES,
-  spotId,
   images,
 });
 
@@ -75,13 +74,12 @@ export const fetchSpotImages = (spotId) => async (dispatch) => {
   try {
     const response = await csrfFetch(`/api/spots/${spotId}/images`);
     if (response.ok) {
-      const images = await response.json();
-      dispatch(loadSpotImages(spotId, images));
-      return images;
+      const data = await response.json();
+      dispatch(loadSpotImages(data));
+      return data;
     }
   } catch (error) {
     console.error("Error fetching spot images:", error);
-    return [];
   }
 };
 
@@ -159,7 +157,10 @@ const spotsReducer = (state = initialState, action) => {
         ...state,
         singleSpot: {
           ...state.singleSpot,
-          SpotImages: action.images,
+          spot: {
+            ...state.singleSpot.spot,
+            previewImage: action.images.find((img) => img.preview)?.url,
+          },
         },
       };
     case ADD_SPOT:
