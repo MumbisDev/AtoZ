@@ -12,8 +12,12 @@ function SpotDetails() {
   const navigate = useNavigate();
   const { spotId } = useParams();
   const sessionUser = useSelector(state => state.session.user);
-  const spotData = useSelector(state => state.spots.singleSpot);
+  const spotData = useSelector(state => {
+    console.log("Current state.spots.singleSpot:", state.spots.singleSpot);
+    return state.spots.singleSpot;
+  });
   const spot = spotData?.spot || spotData;
+  console.log("Processed spot data:", spot);
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);

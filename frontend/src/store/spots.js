@@ -51,14 +51,12 @@ export const fetchSpots = () => async (dispatch) => {
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
   try {
+    console.log("Fetching spot details for ID:", spotId);
     const response = await csrfFetch(`/api/spots/${spotId}`);
+    const spot = await response.json();
+    console.log("Raw spot details response:", spot);
+
     if (response.ok) {
-      const spot = await response.json();
-      // If the response includes SpotImages, the preview image will be the one with preview: true
-      if (spot.SpotImages) {
-        const previewImage = spot.SpotImages.find((img) => img.preview)?.url;
-        spot.previewImage = previewImage;
-      }
       dispatch(loadSpotDetails(spot));
       return spot;
     }
