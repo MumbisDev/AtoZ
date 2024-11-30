@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchSpotDetails, fetchSpotImages, deleteSpot } from '../../store/spots';
+import { fetchSpotDetails, deleteSpot } from '../../store/spots';
 import { fetchSpotReviews, deleteReview } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
@@ -14,7 +14,6 @@ function SpotDetails() {
   const sessionUser = useSelector(state => state.session.user);
   const spotData = useSelector(state => state.spots.singleSpot);
   const spot = spotData?.spot || spotData;
-  const previewImage = spotData?.previewImage; // Get previewImage from spotData directly
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
@@ -23,7 +22,6 @@ function SpotDetails() {
     const loadSpotData = async () => {
       try {
         await dispatch(fetchSpotDetails(spotId));
-        await dispatch(fetchSpotImages(spotId)); // Add this line
         await dispatch(fetchSpotReviews(spotId));
         setIsLoaded(true);
       } catch (err) {
@@ -55,7 +53,7 @@ function SpotDetails() {
   };
 
   
-  return (
+   return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
       <div className="spot-location">
@@ -63,9 +61,9 @@ function SpotDetails() {
       </div>
 
       <div className="spot-images">
-        {previewImage ? ( // Use previewImage instead of spot.previewImage
+        {(spot.SpotImages && spot.SpotImages.length > 0) ? (
           <img
-            src={previewImage}
+            src={spot.SpotImages.find(img => img.preview)?.url || spot.SpotImages[0].url}
             alt={spot.name}
             className="main-image"
             onError={(e) => {

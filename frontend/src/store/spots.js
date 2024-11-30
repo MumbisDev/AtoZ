@@ -6,7 +6,6 @@ const LOAD_SPOT_DETAILS = "spots/LOAD_SPOT_DETAILS";
 const ADD_SPOT = "spots/ADD_SPOT";
 const UPDATE_SPOT = "spots/UPDATE_SPOT";
 const REMOVE_SPOT = "spots/REMOVE_SPOT";
-const LOAD_SPOT_IMAGES = "spots/LOAD_SPOT_IMAGES";
 
 // Action Creators
 const loadSpots = (spots) => ({
@@ -17,11 +16,6 @@ const loadSpots = (spots) => ({
 const loadSpotDetails = (spot) => ({
   type: LOAD_SPOT_DETAILS,
   spot,
-});
-
-const loadSpotImages = (images) => ({
-  type: LOAD_SPOT_IMAGES,
-  images,
 });
 
 const addSpot = (spot) => ({
@@ -60,26 +54,17 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`);
     if (response.ok) {
       const spot = await response.json();
-      console.log("Fetched spot details:", spot); // Debug log
+      // If the response includes SpotImages, the preview image will be the one with preview: true
+      if (spot.SpotImages) {
+        const previewImage = spot.SpotImages.find((img) => img.preview)?.url;
+        spot.previewImage = previewImage;
+      }
       dispatch(loadSpotDetails(spot));
       return spot;
     }
   } catch (error) {
     console.error("Error fetching spot details:", error);
     throw error;
-  }
-};
-
-export const fetchSpotImages = (spotId) => async (dispatch) => {
-  try {
-    const response = await csrfFetch(`/api/spots/${spotId}/images`);
-    if (response.ok) {
-      const data = await response.json();
-      dispatch(loadSpotImages(data));
-      return data;
-    }
-  } catch (error) {
-    console.error("Error fetching spot images:", error);
   }
 };
 
@@ -151,15 +136,6 @@ const spotsReducer = (state = initialState, action) => {
       return {
         ...state,
         singleSpot: action.spot,
-      };
-
-    case LOAD_SPOT_IMAGES:
-      return {
-        ...state,
-        singleSpot: {
-          ...state.singleSpot,
-          previewImage: action.images.find((img) => img.preview)?.url,
-        },
       };
 
     case ADD_SPOT:
