@@ -152,17 +152,16 @@ const spotsReducer = (state = initialState, action) => {
         ...state,
         singleSpot: action.spot,
       };
+
     case LOAD_SPOT_IMAGES:
       return {
         ...state,
         singleSpot: {
           ...state.singleSpot,
-          spot: {
-            ...state.singleSpot.spot,
-            previewImage: action.images.find((img) => img.preview)?.url,
-          },
+          previewImage: action.images.find((img) => img.preview)?.url,
         },
       };
+
     case ADD_SPOT:
       return {
         ...state,

@@ -14,6 +14,7 @@ function SpotDetails() {
   const sessionUser = useSelector(state => state.session.user);
   const spotData = useSelector(state => state.spots.singleSpot);
   const spot = spotData?.spot || spotData;
+  const previewImage = spotData?.previewImage; // Get previewImage from spotData directly
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
@@ -53,6 +54,7 @@ function SpotDetails() {
     navigate(`/spots/${spotId}/edit`);
   };
 
+  
   return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
@@ -61,9 +63,9 @@ function SpotDetails() {
       </div>
 
       <div className="spot-images">
-        {spot.previewImage ? (
+        {previewImage ? ( // Use previewImage instead of spot.previewImage
           <img
-            src={spot.previewImage}
+            src={previewImage}
             alt={spot.name}
             className="main-image"
             onError={(e) => {
