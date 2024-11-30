@@ -51,14 +51,25 @@ export const fetchSpots = () => async (dispatch) => {
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
   try {
-    console.log("Fetching spot details for ID:", spotId);
+    // First get the basic spot details
     const response = await csrfFetch(`/api/spots/${spotId}`);
-    const spot = await response.json();
-    console.log("Raw spot details response:", spot);
-
     if (response.ok) {
-      dispatch(loadSpotDetails(spot));
-      return spot;
+      const spotData = await response.json();
+
+      // Get the preview image from the landing page endpoint
+      const previewResponse = await csrfFetch(`/api/spots`);
+      if (previewResponse.ok) {
+        const allSpots = await previewResponse.json();
+        const spotWithPreview = allSpots.Spots.find(
+          (s) => s.id === parseInt(spotId)
+        );
+        if (spotWithPreview) {
+          spotData.spot.previewImage = spotWithPreview.previewImage;
+        }
+      }
+
+      dispatch(loadSpotDetails(spotData));
+      return spotData;
     }
   } catch (error) {
     console.error("Error fetching spot details:", error);

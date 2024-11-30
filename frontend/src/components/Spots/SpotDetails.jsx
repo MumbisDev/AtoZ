@@ -12,12 +12,9 @@ function SpotDetails() {
   const navigate = useNavigate();
   const { spotId } = useParams();
   const sessionUser = useSelector(state => state.session.user);
-  const spotData = useSelector(state => {
-    console.log("Current state.spots.singleSpot:", state.spots.singleSpot);
-    return state.spots.singleSpot;
-  });
-  const spot = spotData?.spot || spotData;
-  console.log("Processed spot data:", spot);
+  const spotData = useSelector(state => state.spots.singleSpot);
+  // Change how we access the spot data
+  const spot = spotData?.spot;
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
@@ -38,9 +35,9 @@ function SpotDetails() {
     loadSpotData();
   }, [dispatch, spotId]);
 
-  if (!isLoaded) return <div>Loading...</div>;
+  // Add early return if spot is not loaded
+  if (!isLoaded || !spot) return <div>Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
-  if (!spot) return <div>Spot not found</div>;
 
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
@@ -56,8 +53,7 @@ function SpotDetails() {
     navigate(`/spots/${spotId}/edit`);
   };
 
-  
-   return (
+  return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
       <div className="spot-location">
@@ -65,19 +61,16 @@ function SpotDetails() {
       </div>
 
       <div className="spot-images">
-        {(spot.SpotImages && spot.SpotImages.length > 0) ? (
-          <img
-            src={spot.SpotImages.find(img => img.preview)?.url || spot.SpotImages[0].url}
-            alt={spot.name}
-            className="main-image"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
-            }}
-          />
-        ) : (
-          <div className="no-images">No images available</div>
-        )}
+        {/* Just use the basic image URL from landing page pattern */}
+        <img
+          src={spot.previewImage || `https://source.unsplash.com/800x600/?house,${spot.id}`}
+          alt={spot.name}
+          className="main-image"
+          onError={(e) => {
+            e.target.onerror = null;
+            e.target.src = 'https://via.placeholder.com/800x600?text=No+Image';
+          }}
+        />
       </div>
 
       <div className="spot-info-container">
