@@ -100,17 +100,16 @@ export const createSpot = (spotData) => async (dispatch) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.log("Server error response:", errorData);
       throw new Error(errorData.message || "Failed to create spot");
     }
 
-    const data = await response.json();
-    const newSpot = data.spot; // Access the nested spot object
-    console.log("New spot response:", data);
+    const { spot } = await response.json(); // Destructure the spot from the response
+    console.log("Created spot:", spot);
 
-    // If we have images, add them in a separate request
+    // Now we have the correct spot.id
     if (spotData.images && spotData.images.length > 0) {
-      const imageResponse = await csrfFetch(`/api/spots/${newSpot.id}/images`, {
+      console.log("Adding image for spot ID:", spot.id); // Debug log
+      const imageResponse = await csrfFetch(`/api/spots/${spot.id}/images`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -122,12 +121,14 @@ export const createSpot = (spotData) => async (dispatch) => {
       });
 
       if (!imageResponse.ok) {
-        console.log("Error adding image:", await imageResponse.json());
+        console.error("Error adding image:", await imageResponse.json());
+      } else {
+        console.log("Successfully added image");
       }
     }
 
-    dispatch(addSpot(newSpot));
-    return newSpot;
+    dispatch(addSpot(spot));
+    return spot;
   } catch (error) {
     console.error("Error creating spot:", error);
     throw error;
