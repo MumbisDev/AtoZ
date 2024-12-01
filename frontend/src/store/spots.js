@@ -79,8 +79,6 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
 
 export const createSpot = (spotData) => async (dispatch) => {
   try {
-    console.log("Sending spot data:", spotData); // Debug log
-
     // First create the spot
     const response = await csrfFetch("/api/spots", {
       method: "POST",
@@ -92,8 +90,8 @@ export const createSpot = (spotData) => async (dispatch) => {
         city: spotData.city,
         state: spotData.state,
         country: spotData.country,
-        lat: parseFloat(spotData.lat) || 0,
-        lng: parseFloat(spotData.lng) || 0,
+        lat: parseFloat(spotData.lat),
+        lng: parseFloat(spotData.lng),
         name: spotData.name,
         description: spotData.description,
         price: parseFloat(spotData.price),
@@ -102,12 +100,13 @@ export const createSpot = (spotData) => async (dispatch) => {
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.log("Server error response:", errorData); // Debug log
+      console.log("Server error response:", errorData);
       throw new Error(errorData.message || "Failed to create spot");
     }
 
-    const newSpot = await response.json();
-    console.log("New spot response:", newSpot); // Debug log
+    const data = await response.json();
+    const newSpot = data.spot; // Access the nested spot object
+    console.log("New spot response:", data);
 
     // If we have images, add them in a separate request
     if (spotData.images && spotData.images.length > 0) {
