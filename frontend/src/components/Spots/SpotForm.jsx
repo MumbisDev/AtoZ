@@ -35,7 +35,20 @@ function SpotForm() {
     if (!formData.city) newErrors.city = 'City is required';
     if (!formData.state) newErrors.state = 'State is required';
     if (!formData.country) newErrors.country = 'Country is required';
+    if (!formData.lat) newErrors.lat = 'Latitude is required';
+    if (!formData.lng) newErrors.lng = 'Longitude is required';
     if (!formData.images[0]) newErrors.images = 'Preview image is required';
+    
+    // Validate latitude and longitude ranges
+    const lat = parseFloat(formData.lat);
+    const lng = parseFloat(formData.lng);
+    
+    if (isNaN(lat) || lat < -90 || lat > 90) {
+      newErrors.lat = 'Latitude must be between -90 and 90';
+    }
+    if (isNaN(lng) || lng < -180 || lng > 180) {
+      newErrors.lng = 'Longitude must be between -180 and 180';
+    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -135,16 +148,46 @@ function SpotForm() {
             </div>
           </div>
 
-          <div className="form-group">
-            <input
-              type="text"
-              name="country"
-              value={formData.country}
-              onChange={handleChange}
-              placeholder="Country"
-              className={errors.country ? 'error' : ''}
-            />
-            {errors.country && <span className="error-message">{errors.country}</span>}
+          <div className="form-row">
+            <div className="form-group">
+              <input
+                type="text"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                placeholder="Country"
+                className={errors.country ? 'error' : ''}
+              />
+              {errors.country && <span className="error-message">{errors.country}</span>}
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <input
+                type="number"
+                name="lat"
+                value={formData.lat}
+                onChange={handleChange}
+                placeholder="Latitude"
+                step="any"
+                className={errors.lat ? 'error' : ''}
+              />
+              {errors.lat && <span className="error-message">{errors.lat}</span>}
+            </div>
+
+            <div className="form-group">
+              <input
+                type="number"
+                name="lng"
+                value={formData.lng}
+                onChange={handleChange}
+                placeholder="Longitude"
+                step="any"
+                className={errors.lng ? 'error' : ''}
+              />
+              {errors.lng && <span className="error-message">{errors.lng}</span>}
+            </div>
           </div>
         </div>
 
