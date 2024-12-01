@@ -1,13 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
-import { createSpot, fetchSpotDetails, editSpot } from '../../store/spots';
+import { useNavigate } from 'react-router-dom';
+import { createSpot } from '../../store/spots';
 import './SpotForm.css';
 
 function SpotForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { spotId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -18,47 +17,25 @@ function SpotForm() {
     city: '',
     state: '',
     country: '',
-    lat: '',
-    lng: '',
-    images: ['', '', '', '', ''] // Array for up to 5 images
+    lat: 0,
+    lng: 0,
+    images: [''] // Just one image for now
   });
 
   const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    if (spotId) {
-      dispatch(fetchSpotDetails(spotId)).then(fetchedSpot => {
-        if (fetchedSpot) {
-          setFormData({
-            name: fetchedSpot.name,
-            description: fetchedSpot.description,
-            price: fetchedSpot.price,
-            address: fetchedSpot.address,
-            city: fetchedSpot.city,
-            state: fetchedSpot.state,
-            country: fetchedSpot.country,
-            lat: fetchedSpot.lat || '',
-            lng: fetchedSpot.lng || '',
-            images: fetchedSpot.SpotImages ? 
-              [...fetchedSpot.SpotImages.map(img => img.url), 
-               ...Array(5 - fetchedSpot.SpotImages.length).fill('')] : 
-              ['', '', '', '', '']
-          });
-        }
-      });
-    }
-  }, [dispatch, spotId]);
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name) newErrors.name = 'Name is required';
     if (!formData.description) newErrors.description = 'Description is required';
-    if (!formData.price) newErrors.price = 'Price is required';
+    if (!formData.price || parseFloat(formData.price) <= 0) {
+      newErrors.price = 'Valid price is required';
+    }
     if (!formData.address) newErrors.address = 'Address is required';
     if (!formData.city) newErrors.city = 'City is required';
     if (!formData.state) newErrors.state = 'State is required';
     if (!formData.country) newErrors.country = 'Country is required';
-    if (!formData.images[0]) newErrors.images = 'At least one image is required';
+    if (!formData.images[0]) newErrors.images = 'Preview image is required';
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -69,51 +46,27 @@ function SpotForm() {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    const submitData = {
-      ...formData,
-      price: parseFloat(formData.price),
-      lat: parseFloat(formData.lat) || 0,
-      lng: parseFloat(formData.lng) || 0
-    };
-
-    // Create the spot data object
-    const spotData = {
-      address: submitData.address,
-      city: submitData.city,
-      state: submitData.state,
-      country: submitData.country,
-      lat: submitData.lat,
-      lng: submitData.lng,
-      name: submitData.name,
-      description: submitData.description,
-      price: submitData.price
-    };
-
-    // Separate the images
-    const images = formData.images.filter(url => url).map(url => ({
-      url,
-      preview: true // You might want to add logic to determine which is the preview image
-    }));
-
     try {
-      if (spotId) {
-        console.log("Updating spot with data:", spotData);
-        await dispatch(editSpot(spotId, spotData));
-        navigate(`/spots/${spotId}`);
-      } else {
-        console.log("Creating new spot with data:", { ...spotData, images });
-        const newSpot = await dispatch(createSpot({ ...spotData, images }));
-        if (newSpot.errors) {
-          setErrors(newSpot.errors);
-          return;
-        }
-        navigate(`/spots/${newSpot.id}`);
-      }
+      // Clean and prepare data
+      const submitData = {
+        ...formData,
+        price: parseFloat(formData.price),
+        lat: parseFloat(formData.lat) || 0,
+        lng: parseFloat(formData.lng) || 0,
+        images: formData.images.filter(url => url.trim()) // Remove empty strings
+      };
+
+      console.log("Submitting data:", submitData); // Debug log
+
+      const newSpot = await dispatch(createSpot(submitData));
+      navigate(`/spots/${newSpot.id}`);
     } catch (error) {
       console.error("Error submitting form:", error);
-      setErrors({ 
-        submit: error.message || 'An error occurred while submitting the form' 
-      });
+      if (error.errors) {
+        setErrors(error.errors);
+      } else {
+        setErrors({ submit: 'Failed to create spot. Please try again.' });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -136,7 +89,7 @@ function SpotForm() {
 
   return (
     <div className="spot-form-container">
-      <h1>{spotId ? 'Edit Spot' : 'Create a New Spot'}</h1>
+      <h1>Create a New Spot</h1>
       {errors.submit && <div className="error-message">{errors.submit}</div>}
       
       <form onSubmit={handleSubmit} className="spot-form">
@@ -182,18 +135,16 @@ function SpotForm() {
             </div>
           </div>
 
-          <div className="form-row">
-            <div className="form-group">
-              <input
-                type="text"
-                name="country"
-                value={formData.country}
-                onChange={handleChange}
-                placeholder="Country"
-                className={errors.country ? 'error' : ''}
-              />
-              {errors.country && <span className="error-message">{errors.country}</span>}
-            </div>
+          <div className="form-group">
+            <input
+              type="text"
+              name="country"
+              value={formData.country}
+              onChange={handleChange}
+              placeholder="Country"
+              className={errors.country ? 'error' : ''}
+            />
+            {errors.country && <span className="error-message">{errors.country}</span>}
           </div>
         </div>
 
@@ -236,6 +187,7 @@ function SpotForm() {
                 onChange={handleChange}
                 placeholder="Price per night"
                 min="0"
+                step="0.01"
                 className={errors.price ? 'error' : ''}
               />
             </div>
@@ -244,31 +196,25 @@ function SpotForm() {
         </div>
 
         <div className="form-section">
-          <h2>Add photos of your place</h2>
-          <p>Submit at least one photo to publish your spot.</p>
-          
-          {formData.images.map((url, index) => (
-            <div key={index} className="form-group">
-              <input
-                type="url"
-                value={url}
-                onChange={(e) => handleImageChange(index, e.target.value)}
-                placeholder={index === 0 ? "Preview Image URL (required)" : `Image URL ${index + 1} (optional)`}
-                className={index === 0 && errors.images ? 'error' : ''}
-              />
-              {index === 0 && errors.images && <span className="error-message">{errors.images}</span>}
-            </div>
-          ))}
+          <h2>Add photos</h2>
+          <div className="form-group">
+            <input
+              type="url"
+              value={formData.images[0]}
+              onChange={(e) => handleImageChange(0, e.target.value)}
+              placeholder="Preview Image URL (required)"
+              className={errors.images ? 'error' : ''}
+            />
+            {errors.images && <span className="error-message">{errors.images}</span>}
+          </div>
         </div>
 
         <button type="submit" className="submit-button" disabled={isLoading}>
-          {isLoading ? 'Saving...' : (spotId ? 'Save Changes' : 'Create Spot')}
+          {isLoading ? 'Creating...' : 'Create Spot'}
         </button>
       </form>
     </div>
   );
 }
-
-
 
 export default SpotForm;

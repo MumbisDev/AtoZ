@@ -79,16 +79,56 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
 
 export const createSpot = (spotData) => async (dispatch) => {
   try {
+    console.log("Sending spot data:", spotData); // Debug log
+
+    // First create the spot
     const response = await csrfFetch("/api/spots", {
       method: "POST",
-      body: JSON.stringify(spotData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        address: spotData.address,
+        city: spotData.city,
+        state: spotData.state,
+        country: spotData.country,
+        lat: parseFloat(spotData.lat) || 0,
+        lng: parseFloat(spotData.lng) || 0,
+        name: spotData.name,
+        description: spotData.description,
+        price: parseFloat(spotData.price),
+      }),
     });
 
-    if (response.ok) {
-      const newSpot = await response.json();
-      dispatch(addSpot(newSpot));
-      return newSpot;
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.log("Server error response:", errorData); // Debug log
+      throw new Error(errorData.message || "Failed to create spot");
     }
+
+    const newSpot = await response.json();
+    console.log("New spot response:", newSpot); // Debug log
+
+    // If we have images, add them in a separate request
+    if (spotData.images && spotData.images.length > 0) {
+      const imageResponse = await csrfFetch(`/api/spots/${newSpot.id}/images`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          url: spotData.images[0],
+          preview: true,
+        }),
+      });
+
+      if (!imageResponse.ok) {
+        console.log("Error adding image:", await imageResponse.json());
+      }
+    }
+
+    dispatch(addSpot(newSpot));
+    return newSpot;
   } catch (error) {
     console.error("Error creating spot:", error);
     throw error;
