@@ -20,7 +20,7 @@ function SpotsList() {
           key={spot.id} 
           className="spot-card"
           onClick={() => navigate(`/spots/${spot.id}`)}
-          title={spot.name} // Add tooltip
+          title={spot.name}
         >
           <div className="spot-image-container">
             <img 
@@ -34,11 +34,11 @@ function SpotsList() {
               <h3>{spot.name}</h3>
               <div className="spot-rating">
                 <i className="fas fa-star"></i>
-                {spot.avgRating ? spot.avgRating.toFixed(1) : 'New'}
+                {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'}
               </div>
             </div>
             <p className="spot-location">{spot.city}, {spot.state}</p>
-            <p className="spot-price"><span>${spot.price}</span> night</p>
+            <p className="spot-price"><span>${Number(spot.price).toFixed(2)}</span> night</p>
           </div>
         </div>
       ))}
