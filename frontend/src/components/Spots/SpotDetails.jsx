@@ -17,7 +17,8 @@ function SpotDetails() {
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
-  const [owner, setOwner] = useState(null);
+  const [ setOwner] = useState(null);
+  const host = spot?.Owner?.user; // Get the nested user data
 
   useEffect(() => {
     const loadSpotData = async () => {
@@ -88,8 +89,8 @@ function SpotDetails() {
       <div className="spot-info-container">
         <div className="spot-description">
           <h2 className="host-info">
-            {owner ? (
-              `Hosted by ${owner.firstName} ${owner.lastName}`
+            {host ? (
+              `Hosted by ${host.firstName} ${host.lastName}`
             ) : (
               'Loading host information...'
             )}
