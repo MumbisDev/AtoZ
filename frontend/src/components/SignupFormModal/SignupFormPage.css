@@ -2,15 +2,13 @@
     background-color: white;
     padding: 40px;
     border-radius: 20px;
-    width: 90%;
-    max-width: 800px; /* Increased max-width */
-    height: 85vh; /* Set a fixed height */
+    width: 800px; /* Fixed width instead of percentage */
+    height: 85vh;
     margin: 20px auto;
-    box-sizing: border-box;
     position: relative;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Hide overflow on the container */
+    overflow: hidden;
   }
   
   .signup-modal h1 {
@@ -27,11 +25,12 @@
   
   .signup-form {
     flex: 1;
-    overflow-y: auto; /* Enable scrolling on the form */
-    padding-right: 20px; /* Add space for scrollbar */
+    overflow-y: auto;
+    padding-right: 20px;
     display: flex;
     flex-direction: column;
     gap: 20px;
+    width: 100%; /* Ensure form takes full width */
   }
   
   /* Scrollbar styling */
