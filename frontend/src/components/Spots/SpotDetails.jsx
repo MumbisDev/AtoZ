@@ -115,8 +115,9 @@ export default function SpotDetails() {
             </div>
             <div className="rating">
               <i className="fas fa-star"></i>
-              {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
-              {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
+              {reviews.length > 0 ? (
+            ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}`
+          ) : ' New'} · Reviews 
             </div>
           </div>
 
