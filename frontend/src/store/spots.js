@@ -55,6 +55,7 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     const response = await csrfFetch(`/api/spots/${spotId}`);
     if (response.ok) {
       const spotData = await response.json();
+      const spot = spotData.spot;
 
       // Get the preview image from the landing page endpoint
       const previewResponse = await csrfFetch(`/api/spots`);
@@ -68,12 +69,10 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
         }
       }
 
-      const ownerResponse = await csrfFetch(
-        `/api/users/${spotData.spot.ownerId}`
-      );
+      const ownerResponse = await csrfFetch(`/api/users/${spot.ownerId}`);
       if (ownerResponse.ok) {
         const ownerData = await ownerResponse.json();
-        spotData.Owner = ownerData; // Add owner data to spot
+        spot.Owner = ownerData; // Add owner data to spot
       }
 
       dispatch(loadSpotDetails(spotData));
