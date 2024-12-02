@@ -1,9 +1,9 @@
 .login-modal {
     background-color: white;
-    padding: 40px; /* Increased padding */
-    border-radius: 40px; /* Increased border radius */
+    padding: 50px; /* Increased padding */
+    border-radius: 30px; /* More rounded edges */
     width: 90%;
-    max-width: 750px; /* Increased max-width */
+    max-width: 900px; /* Increased max-width */
     margin: 0 auto;
     box-sizing: border-box;
   }
@@ -11,65 +11,52 @@
   .login-modal h1 {
     margin: 0;
     text-align: center;
-    font-size: 28px; /* Increased font size */
+    font-size: 32px; /* Increased font size */
     color: #222;
-    margin-bottom: 8px;
+    margin-bottom: 16px;
   }
   
   .error-message {
     color: #ff385c;
-    font-size: 16px; /* Increased font size */
+    font-size: 18px; /* Increased font size */
     text-align: center;
-    margin: 8px 0 16px 0;
+    margin: 12px 0 20px 0;
   }
   
   .login-form {
     display: flex;
     flex-direction: column;
-    gap: 20px; /* Increased gap */
+    gap: 24px; /* Increased gap */
     width: 100%;
   }
   
   .login-form label {
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Increased gap */
-    font-size: 16px; /* Increased font size */
+    gap: 12px; /* Increased gap */
+    font-size: 18px; /* Increased font size */
     color: #222;
     width: 100%;
   }
   
   .login-form input {
-    padding: 15px; /* Increased padding */
+    padding: 18px; /* Increased padding */
     border: 1px solid #ddd;
-    border-radius: 12px; /* Increased border radius */
-    font-size: 16px;
+    border-radius: 16px; /* More rounded edges */
+    font-size: 18px;
     width: 100%;
     box-sizing: border-box;
   }
   
-  .login-form input:focus {
-    outline: none;
-    border-color: #222;
-  }
-  
   .login-form button {
-    margin-top: 12px;
-    padding: 16px; /* Increased padding */
+    margin-top: 16px;
+    padding: 20px; /* Increased padding */
     background-color: #ff385c;
     color: white;
     border: none;
-    border-radius: 12px; /* Increased border radius */
-    font-size: 18px; /* Increased font size */
+    border-radius: 16px; /* More rounded edges */
+    font-size: 20px; /* Increased font size */
     cursor: pointer;
     transition: background-color 0.2s;
     width: 100%;
-  }
-  
-  .login-form button:hover {
-    background-color: #e31c5f;
-  }
-  
-  .input-error {
-    border-color: #ff385c !important;
   }
