@@ -31,6 +31,18 @@
     border-radius: 0 12px 12px 0;
   }
   
+  .host-info {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #222222;
+  }
+  
+  .spot-description {
+    padding: 24px 0;
+    border-bottom: 1px solid #dddddd;
+  }  
+
   .spot-info-container {
     display: grid;
     grid-template-columns: 2fr 1fr;

@@ -76,7 +76,9 @@ function SpotDetails() {
       <div className="spot-info-container">
         <div className="spot-description">
           {spot.Owner && (
-            <h2>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
+            <h2 className="host-info">
+              Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
+            </h2>
           )}
           <p>{spot.description}</p>
         </div>
