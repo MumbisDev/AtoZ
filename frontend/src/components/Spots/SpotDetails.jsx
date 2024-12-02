@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams, useNavigate } from 'react-router-dom';
-import { fetchSpotDetails, deleteSpot } from '../../store/spots';
+import { useParams } from 'react-router-dom';
+import { fetchSpotDetails } from '../../store/spots';
 import { fetchSpotReviews, deleteReview } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
@@ -10,7 +10,6 @@ import './SpotDetails.css';
 // Move component to separate function declaration
 export default function SpotDetails() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { spotId } = useParams();
   const sessionUser = useSelector(state => state.session.user);
   const spotData = useSelector(state => state.spots.singleSpot);
@@ -130,22 +129,6 @@ export default function SpotDetails() {
   </button>
 </div>
       </div>
-
-      {isOwner && (
-        <div className="owner-actions">
-          <button onClick={() => navigate(`/spots/${spotId}/edit`)} className="edit-button">
-            Edit Spot
-          </button>
-          <button onClick={() => {
-            if (window.confirm('Are you sure you want to delete this spot?')) {
-              dispatch(deleteSpot(spotId));
-              navigate('/');
-            }
-          }} className="delete-button">
-            Delete Spot
-          </button>
-        </div>
-      )}
 
       {/* Reviews section */}
       
