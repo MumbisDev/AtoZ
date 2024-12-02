@@ -39,9 +39,25 @@ export default function SpotDetails() {
   if (error) return <div className="error-message">{error}</div>;
   if (!spot) return <div>Spot not found</div>;
 
-  const host = spot.Owner?.user;
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
+
+  const getHostInfo = () => {
+    // Try different possible paths to host information
+    if (spot.Owner?.user?.firstName) {
+      return `${spot.Owner.user.firstName} ${spot.Owner.user.lastName}`;
+    }
+    if (spot.Owner?.firstName) {
+      return `${spot.Owner.firstName} ${spot.Owner.lastName}`;
+    }
+    // If we have ownerId but no Owner info, we could fetch it
+    if (spot.ownerId) {
+      // You might want to fetch user info here
+      return `Host #${spot.ownerId}`;
+    }
+    return 'Unknown Host';
+  };
+
 
   return (
     <div className="spot-details">
@@ -69,11 +85,7 @@ export default function SpotDetails() {
       <div className="spot-info-container">
         <div className="spot-description">
           <h2 className="host-info">
-            {host ? (
-              `Hosted by ${host.firstName} ${host.lastName}`
-            ) : (
-              'Loading host information...'
-            )}
+            Hosted by {getHostInfo()}
           </h2>
           <p>{spot.description}</p>
         </div>
