@@ -117,7 +117,7 @@ export default function SpotDetails() {
               <i className="fas fa-star"></i>
               {reviews.length > 0 ? (
             ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}`
-          ) : ' New'} · Reviews 
+          ) : ' New'} · {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
             </div>
           </div>
 
@@ -154,7 +154,7 @@ export default function SpotDetails() {
           <i className="fas fa-star"></i>
           {reviews.length > 0 ? (
             ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}`
-          ) : ' New'} · Reviews
+          ) : ' New'} · {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
         </h2>
         
         {sessionUser && !isOwner && !hasReviewed && (
