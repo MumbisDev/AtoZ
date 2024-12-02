@@ -3,53 +3,54 @@
     padding: 40px;
     border-radius: 20px;
     width: 90%;
-    max-width: 500px;
-    margin: 0 auto;
+    max-width: 800px; /* Increased max-width */
+    height: 85vh; /* Set a fixed height */
+    margin: 20px auto;
     box-sizing: border-box;
-    max-height: 90vh; /* Maximum height of 90% of viewport height */
-    overflow-y: auto; /* Enable scrolling if content exceeds max-height */
-    position: relative; /* For sticky header */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Hide overflow on the container */
   }
   
   .signup-modal h1 {
     margin: 0;
+    padding: 0 0 24px 0;
     text-align: center;
     font-size: 28px;
     color: #222;
-    margin-bottom: 24px;
-    position: sticky; /* Make header sticky */
-    top: 0;
     background-color: white;
-    padding: 10px 0;
-    z-index: 1;
+    position: sticky;
+    top: 0;
+    z-index: 2;
   }
   
-  /* Add smooth scrolling to the modal */
-  .signup-modal {
-    scrollbar-width: thin;
-    scrollbar-color: #888 #f1f1f1;
+  .signup-form {
+    flex: 1;
+    overflow-y: auto; /* Enable scrolling on the form */
+    padding-right: 20px; /* Add space for scrollbar */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
   
-  .signup-modal::-webkit-scrollbar {
+  /* Scrollbar styling */
+  .signup-form::-webkit-scrollbar {
     width: 8px;
   }
   
-  .signup-modal::-webkit-scrollbar-track {
+  .signup-form::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-radius: 4px;
   }
   
-  .signup-modal::-webkit-scrollbar-thumb {
+  .signup-form::-webkit-scrollbar-thumb {
     background: #888;
     border-radius: 4px;
   }
   
-  /* Rest of your existing CSS... */
-  .signup-form {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
+  .signup-form::-webkit-scrollbar-thumb:hover {
+    background: #555;
   }
   
   .form-group {
@@ -89,7 +90,7 @@
   }
   
   .signup-form button {
-    margin-top: 12px;
+    margin: 20px 0;
     padding: 16px;
     background-color: #ff385c;
     color: white;
