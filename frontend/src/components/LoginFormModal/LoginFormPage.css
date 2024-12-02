@@ -2,21 +2,32 @@
     background-color: white;
     padding: 24px;
     border-radius: 12px;
-    width: 100%;
+    width: 90%; /* Reduced from 100% */
     max-width: 400px;
+    margin: 0 auto; /* Center the modal */
+    box-sizing: border-box; /* Include padding in width calculation */
   }
   
   .login-modal h1 {
-    margin: 0 0 24px 0;
+    margin: 0;
     text-align: center;
     font-size: 24px;
     color: #222;
+    margin-bottom: 8px; /* Reduced space before error message */
+  }
+  
+  .error-message {
+    color: #ff385c;
+    font-size: 14px;
+    text-align: center;
+    margin: 8px 0 16px 0; /* Space after error message */
   }
   
   .login-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
+    width: 100%; /* Ensure form takes full width of modal */
   }
   
   .login-form label {
@@ -25,6 +36,7 @@
     gap: 8px;
     font-size: 14px;
     color: #222;
+    width: 100%; /* Ensure labels take full width */
   }
   
   .login-form input {
@@ -32,7 +44,8 @@
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 16px;
-    width: 100%;
+    width: 100%; /* Ensure inputs take full width */
+    box-sizing: border-box; /* Include padding in width calculation */
   }
   
   .login-form input:focus {
@@ -50,17 +63,11 @@
     font-size: 16px;
     cursor: pointer;
     transition: background-color 0.2s;
+    width: 100%; /* Make button full width */
   }
   
   .login-form button:hover {
     background-color: #e31c5f;
-  }
-  
-  .error-message {
-    color: #ff385c;
-    font-size: 14px;
-    margin-top: 4px;
-    text-align: center;
   }
   
   .input-error {
