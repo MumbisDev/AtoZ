@@ -61,39 +61,32 @@
     gap: 10px;
     margin-top: 12px;
   }
-  
-  .update-button {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .delete-button {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  
-  .update-button {
+  .update-button,
+.delete-button,
+.spot-actions > button {  /* This targets the OpenModalButton */
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.update-button {
     background-color: #4a90e2;
     color: white;
   }
-  
-  .delete-button {
-    background-color: #dc3545;
-    color: white;
-  }
-  
+
+.delete-button,
+.spot-actions > button {
+  background-color: #dc3545;
+  color: white;
+}
   .update-button:hover {
     background-color: #357abd;
   }
   
-  .delete-button:hover {
+  .delete-button:hover,
+  .spot-actions > button:hover {
     background-color: #c82333;
   }

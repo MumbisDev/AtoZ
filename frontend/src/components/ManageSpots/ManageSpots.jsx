@@ -54,18 +54,28 @@ function ManageSpots() {
               <p className="spot-location">{spot.city}, {spot.state}</p>
               <p className="spot-price"><span>${spot.price}</span> night</p>
               <div className="spot-actions">
-                <button 
-                  onClick={() => navigate(`/spots/${spot.id}/edit`)}
-                  className="update-button"
-                >
-                  Update
-                </button>
-                <OpenModalButton 
-                  buttonText="Delete"
-                  modalComponent={<DeleteSpotModal spotId={spot.id} />}
-                  className="delete-button"
-                />
-              </div>
+  <button 
+    onClick={() => navigate(`/spots/${spot.id}/edit`)}
+    className="update-button"
+  >
+    Update
+  </button>
+  <OpenModalButton 
+    buttonText="Delete"
+    modalComponent={<DeleteSpotModal spotId={spot.id} />}
+    className="delete-button"
+    style={{ 
+      flex: 1,
+      padding: '8px',
+      border: 'none',
+      borderRadius: '6px',
+      cursor: 'pointer',
+      backgroundColor: '#dc3545',
+      color: 'white',
+      transition: 'all 0.2s'
+    }}
+  />
+</div>
             </div>
           </div>
         ))}
