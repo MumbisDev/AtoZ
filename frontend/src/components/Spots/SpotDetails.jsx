@@ -6,15 +6,14 @@ import { fetchSpotReviews, deleteReview } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
 import './SpotDetails.css';
-
 function SpotDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { spotId } = useParams();
   const sessionUser = useSelector(state => state.session.user);
   const spotData = useSelector(state => state.spots.singleSpot);
-  // Change how we access the spot data
-  const spot = spotData?.spot;
+  const spot = spotData?.spot; // The spot data is nested under 'spot'
+  const owner = spot?.Owner; // Get the owner from the spot data
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
@@ -54,7 +53,7 @@ function SpotDetails() {
   };
 
  
-  return (
+    return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
       <div className="spot-location">
@@ -79,11 +78,9 @@ function SpotDetails() {
 
       <div className="spot-info-container">
         <div className="spot-description">
-          {spot.Owner && (
-            <h2 className="host-info">
-              Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
-            </h2>
-          )}
+          <h2 className="host-info">
+            Hosted by {owner ? `${owner.firstName} ${owner.lastName}` : 'Unknown Host'}
+          </h2>
           <p>{spot.description}</p>
         </div>
         
