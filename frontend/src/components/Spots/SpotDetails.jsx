@@ -119,7 +119,15 @@ export default function SpotDetails() {
               {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
             </div>
           </div>
-        </div>
+
+          <button 
+    className="reserve-button"
+    onClick={() => alert('Feature coming soon!')}
+    disabled={isOwner}
+  >
+    Reserve
+  </button>
+</div>
       </div>
 
       {isOwner && (
@@ -139,12 +147,11 @@ export default function SpotDetails() {
       )}
 
       {/* Reviews section */}
+      
       <div className="reviews-section">
         <h2>
-          <i className="fas fa-star"></i> {/* Add star icon */}
-          &nbsp;
-          {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
-          {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
+          <i className="fas fa-star"></i>
+          {` ${spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'}`} · Reviews
         </h2>
         
         {sessionUser && !isOwner && !hasReviewed && (
