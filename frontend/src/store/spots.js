@@ -75,8 +75,8 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
         spot.Owner = ownerData; // Add owner data to spot
       }
 
-      dispatch(loadSpotDetails(spotData));
-      return spotData;
+      dispatch(loadSpotDetails({ spot }));
+      return spot;
     }
   } catch (error) {
     console.error("Error fetching spot details:", error);
