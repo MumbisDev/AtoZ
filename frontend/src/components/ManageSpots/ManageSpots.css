@@ -62,7 +62,15 @@
     margin-top: 12px;
   }
   
-  .update-button,
+  .update-button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
   .delete-button {
     flex: 1;
     padding: 8px;
