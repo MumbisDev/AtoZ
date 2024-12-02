@@ -53,6 +53,7 @@ function SpotDetails() {
     navigate(`/spots/${spotId}/edit`);
   };
 
+ 
   return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
@@ -61,16 +62,19 @@ function SpotDetails() {
       </div>
 
       <div className="spot-images">
-        {/* Just use the basic image URL from landing page pattern */}
-        <img
-          src={spot.previewImage || `https://source.unsplash.com/800x600/?house,${spot.id}`}
-          alt={spot.name}
-          className="main-image"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = 'https://via.placeholder.com/800x600?text=No+Image';
-          }}
-        />
+        {spot.previewImage ? (
+          <img
+            src={spot.previewImage}
+            alt={spot.name}
+            className="main-image"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+            }}
+          />
+        ) : (
+          <div className="no-images">No images available</div>
+        )}
       </div>
 
       <div className="spot-info-container">
@@ -82,7 +86,7 @@ function SpotDetails() {
           )}
           <p>{spot.description}</p>
         </div>
-
+        
         <div className="spot-booking">
           <div className="price-rating">
             <div className="price">
