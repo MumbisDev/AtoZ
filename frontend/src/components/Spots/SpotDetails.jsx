@@ -6,22 +6,31 @@ import { fetchSpotReviews, deleteReview } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
 import './SpotDetails.css';
+
 function SpotDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { spotId } = useParams();
   const sessionUser = useSelector(state => state.session.user);
   const spotData = useSelector(state => state.spots.singleSpot);
-  const spot = spotData?.spot; // The spot data is nested under 'spot'
-  const owner = spot?.Owner; // Get the owner from the spot data
+  const spot = spotData?.spot;
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [owner, setOwner] = useState(null);
 
   useEffect(() => {
     const loadSpotData = async () => {
       try {
         await dispatch(fetchSpotDetails(spotId));
+        // Fetch owner data
+        if (spot?.ownerId) {
+          const ownerResponse = await fetch(`/api/users/${spot.ownerId}`);
+          if (ownerResponse.ok) {
+            const ownerData = await ownerResponse.json();
+            setOwner(ownerData);
+          }
+        }
         await dispatch(fetchSpotReviews(spotId));
         setIsLoaded(true);
       } catch (err) {
@@ -32,7 +41,7 @@ function SpotDetails() {
     };
     
     loadSpotData();
-  }, [dispatch, spotId]);
+  }, [dispatch, spotId, spot?.ownerId]);
 
   // Add early return if spot is not loaded
   if (!isLoaded || !spot) return <div>Loading...</div>;
@@ -53,7 +62,7 @@ function SpotDetails() {
   };
 
  
-    return (
+  return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
       <div className="spot-location">
@@ -79,11 +88,15 @@ function SpotDetails() {
       <div className="spot-info-container">
         <div className="spot-description">
           <h2 className="host-info">
-            Hosted by {owner ? `${owner.firstName} ${owner.lastName}` : 'Unknown Host'}
+            {owner ? (
+              `Hosted by ${owner.firstName} ${owner.lastName}`
+            ) : (
+              'Loading host information...'
+            )}
           </h2>
           <p>{spot.description}</p>
         </div>
-        
+
         <div className="spot-booking">
           <div className="price-rating">
             <div className="price">
