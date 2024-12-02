@@ -18,8 +18,13 @@ export default function SpotDetails() {
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
+  const [hostInfo, setHostInfo] = useState(null);
 
   useEffect(() => {
+    setIsLoaded(false);
+    setError(null);
+    setHostInfo(null); // Reset host info
+
     const loadSpotData = async () => {
       try {
         await dispatch(fetchSpotDetails(spotId));
@@ -33,7 +38,26 @@ export default function SpotDetails() {
     };
     
     loadSpotData();
-  }, [dispatch, spotId]);
+  }, [dispatch, spotId]); // Dependencies include spotId
+
+  // Fetch owner info when spot changes
+  useEffect(() => {
+    const fetchOwnerInfo = async () => {
+      if (spot?.ownerId) {
+        try {
+          const response = await fetch(`/api/users/${spot.ownerId}`);
+          if (response.ok) {
+            const userData = await response.json();
+            setHostInfo(userData);
+          }
+        } catch (err) {
+          console.error("Error fetching host info:", err);
+        }
+      }
+    };
+
+    fetchOwnerInfo();
+  }, [spot?.ownerId]); // Depend on ownerId changes
 
   if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
@@ -44,22 +68,15 @@ export default function SpotDetails() {
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
 
   const getHostInfo = () => {
-    // Try different possible paths to host information
     if (spot.Owner?.user?.firstName) {
       return `${spot.Owner.user.firstName} ${spot.Owner.user.lastName}`;
     }
-    if (spot.Owner?.firstName) {
-      return `${spot.Owner.firstName} ${spot.Owner.lastName}`;
+    if (hostInfo?.firstName) {
+      return `${hostInfo.firstName} ${hostInfo.lastName}`;
     }
-    // If we have ownerId but no Owner info, we could fetch it
-    if (spot.ownerId) {
-      // You might want to fetch user info here
-      return `Host #${spot.ownerId}`;
-    }
-    return 'Unknown Host';
+    return 'Loading host information...';
   };
-
-
+  
   return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
