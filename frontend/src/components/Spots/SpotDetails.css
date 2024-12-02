@@ -53,39 +53,39 @@
   }
   
   .spot-booking {
-    padding: 20px;
-    border: 1px solid #dddddd;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  }
-  
-  .price-rating {
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #dddddd;
-  }
-  
-  .reserve-button {
-    width: 100%;
-    padding: 14px;
-    background-color: #ff385c;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .reserve-button:hover {
-    background-color: #e31c5f;
-  }
-  
-  .reserve-button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-  }
+  padding: 20px;
+  border: 1px solid #dddddd;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.price-rating {
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #dddddd;
+}
+
+.reserve-button {
+  width: 100%;
+  padding: 14px;
+  background-color: #ff385c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.reserve-button:hover {
+  background-color: #e31c5f;
+}
+
+.reserve-button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+}
   
   .amount {
     font-size: 22px;
@@ -203,4 +203,9 @@
     color: #717171;
     font-size: 16px;
     border-radius: 12px;
+  }
+
+  .reviews-section h2 .fas.fa-star {
+    color: #222222;
+    margin-right: 4px;
   }

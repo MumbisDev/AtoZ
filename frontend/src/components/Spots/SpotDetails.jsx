@@ -6,7 +6,6 @@ import { fetchSpotReviews, deleteReview } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
 import './SpotDetails.css';
-import RatingDisplay from './RatingDisplay';
 
 // Move component to separate function declaration
 export default function SpotDetails() {
@@ -110,24 +109,16 @@ export default function SpotDetails() {
         </div>
 
         <div className="spot-booking">
-  <div className="price-rating">
-    <div className="price">
-      <span className="amount">${Number(spot.price).toFixed(2)}</span> night
-    </div>
-    <div className="booking-rating">
-              <RatingDisplay 
-                avgRating={spot.avgRating}
-                numReviews={spot.numReviews}
-              />
-    </div>
-  </div>
-  <button 
-    className="reserve-button"
-    onClick={() => alert('Feature coming soon!')}
-    disabled={isOwner}
-  >
-    Reserve
-  </button>
+          <div className="price-rating">
+            <div className="price">
+              <span className="amount">${Number(spot.price).toFixed(2)}</span> night
+            </div>
+            <div className="rating">
+              <i className="fas fa-star"></i>
+              {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
+              {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
+            </div>
+          </div>
         </div>
       </div>
 
@@ -149,21 +140,19 @@ export default function SpotDetails() {
 
       {/* Reviews section */}
       <div className="reviews-section">
-        <div className="reviews-header">
-          <div className="reviews-rating">
-            <RatingDisplay 
-              avgRating={spot.avgRating}
-              numReviews={spot.numReviews}
-            />
-          </div>
-          
-          {sessionUser && !isOwner && !hasReviewed && (
-            <OpenModalButton 
-              buttonText="Write a Review"
-              modalComponent={<CreateReviewModal spotId={spotId} />}
-            />
-          )}
-        </div>
+        <h2>
+          <i className="fas fa-star"></i> {/* Add star icon */}
+          &nbsp;
+          {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
+          {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
+        </h2>
+        
+        {sessionUser && !isOwner && !hasReviewed && (
+          <OpenModalButton 
+            buttonText="Write a Review"
+            modalComponent={<CreateReviewModal spotId={spotId} />}
+          />
+        )}
         
         <div className="reviews-list">
           {reviews.map(review => (
