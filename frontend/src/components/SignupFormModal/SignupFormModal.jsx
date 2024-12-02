@@ -17,13 +17,13 @@ function SignupFormModal() {
   const { closeModal } = useModal();
 
   useEffect(() => {
-    // Check if all fields have values
+    // Check all validation criteria
     const formIsValid = 
       email.length > 0 &&
-      username.length > 0 &&
+      username.length >= 4 && 
       firstName.length > 0 &&
       lastName.length > 0 &&
-      password.length > 0 &&
+      password.length >= 6 && 
       confirmPassword.length > 0;
     
     setIsFormValid(formIsValid);
