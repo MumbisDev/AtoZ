@@ -93,3 +93,46 @@
   .submit-button:hover:not(:disabled) {
     background-color: #e31c5f;
   }
+
+  .rating-display {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+  }
+  
+  .rating-display i {
+    color: #222222;
+  }
+  
+  .booking-rating {
+    margin-top: 8px;
+  }
+  
+  .reviews-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  
+  .reviews-rating {
+    font-size: 22px;
+  }
+  
+  .reviews-rating .rating-display {
+    font-size: inherit;
+  }
+  
+  .reviews-section h2 {
+    margin-bottom: 16px;
+  }
+  
+  .price-rating {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #dddddd;
+  }

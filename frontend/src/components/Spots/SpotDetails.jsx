@@ -6,6 +6,7 @@ import { fetchSpotReviews, deleteReview } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
 import './SpotDetails.css';
+import RatingDisplay from './RatingDisplay';
 
 // Move component to separate function declaration
 export default function SpotDetails() {
@@ -113,10 +114,11 @@ export default function SpotDetails() {
     <div className="price">
       <span className="amount">${Number(spot.price).toFixed(2)}</span> night
     </div>
-    <div className="rating">
-      <i className="fas fa-star"></i>
-      {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
-      {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
+    <div className="booking-rating">
+              <RatingDisplay 
+                avgRating={spot.avgRating}
+                numReviews={spot.numReviews}
+              />
     </div>
   </div>
   <button 
