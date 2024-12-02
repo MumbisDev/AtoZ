@@ -109,16 +109,23 @@ export default function SpotDetails() {
         </div>
 
         <div className="spot-booking">
-          <div className="price-rating">
-            <div className="price">
-              <span className="amount">${Number(spot.price).toFixed(2)}</span> night
-            </div>
-            <div className="rating">
-              <i className="fas fa-star"></i>
-              {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
-              {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
-            </div>
-          </div>
+  <div className="price-rating">
+    <div className="price">
+      <span className="amount">${Number(spot.price).toFixed(2)}</span> night
+    </div>
+    <div className="rating">
+      <i className="fas fa-star"></i>
+      {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
+      {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
+    </div>
+  </div>
+  <button 
+    className="reserve-button"
+    onClick={() => alert('Feature coming soon!')}
+    disabled={isOwner}
+  >
+    Reserve
+  </button>
         </div>
       </div>
 
