@@ -8,6 +8,7 @@ const UPDATE_SPOT = "spots/UPDATE_SPOT";
 const REMOVE_SPOT = "spots/REMOVE_SPOT";
 
 // Action Creators
+
 const loadSpots = (spots) => ({
   type: LOAD_SPOTS,
   spots,
@@ -54,8 +55,8 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     // First get the basic spot details
     const response = await csrfFetch(`/api/spots/${spotId}`);
     if (response.ok) {
-      const spotData = await response.json();
-      const spot = spotData.spot;
+      const data = await response.json();
+      console.log("Spot data:", data);
 
       // Get the preview image from the landing page endpoint
       const previewResponse = await csrfFetch(`/api/spots`);
@@ -65,18 +66,19 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
           (s) => s.id === parseInt(spotId)
         );
         if (spotWithPreview) {
-          spotData.spot.previewImage = spotWithPreview.previewImage;
+          data.spot.previewImage = spotWithPreview.previewImage;
         }
       }
 
-      const ownerResponse = await csrfFetch(`/api/users/${spot.ownerId}`);
+      const ownerResponse = await csrfFetch(`/api/users/${data.spot.ownerId}`);
       if (ownerResponse.ok) {
         const ownerData = await ownerResponse.json();
-        spot.Owner = ownerData; // Add owner data to spot
+        // Update spot data with owner info
+        data.spot.Owner = ownerData;
       }
 
-      dispatch(loadSpotDetails({ spot }));
-      return spot;
+      dispatch(loadSpotDetails(data));
+      return data;
     }
   } catch (error) {
     console.error("Error fetching spot details:", error);
