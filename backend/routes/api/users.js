@@ -71,18 +71,21 @@ router.post("/", validateSignup, async (req, res) => {
 
 router.get("/:userId", async (req, res) => {
   try {
-    if (req.user.id !== parseInt(req.params.userId)) {
-      return res.status(200).json({
-        user: null,
-      });
-    }
-
     const user = await User.findByPk(req.params.userId);
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.status(200).json({ user });
+    // Return only safe user information
+    const safeUser = {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+    };
+
+    res.status(200).json(safeUser);
   } catch (err) {
     res.status(500).json({ message: "Internal server error" });
   }

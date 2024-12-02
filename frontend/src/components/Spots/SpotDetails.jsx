@@ -18,7 +18,6 @@ export default function SpotDetails() {
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
-  const [hostInfo, setHostInfo] = useState(null);
 
   useEffect(() => {
     const loadSpotData = async () => {
@@ -36,91 +35,61 @@ export default function SpotDetails() {
     loadSpotData();
   }, [dispatch, spotId]);
 
-  useEffect(() => {
-    const fetchOwnerInfo = async () => {
-      if (spot?.ownerId && !hostInfo) {
-        try {
-          const response = await fetch(`/api/users/${spot.ownerId}`);
-          if (response.ok) {
-            const userData = await response.json();
-            setHostInfo(userData);
-          }
-        } catch (err) {
-          console.error("Error fetching host info:", err);
-        }
-      }
-    };
-
-    
-    fetchOwnerInfo();
-  }, [spot?.ownerId, hostInfo]);
-
   if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!spot) return <div>Spot not found</div>;
 
-  const getHostName = () => {
-    if (hostInfo) {
-      return `${hostInfo.firstName} ${hostInfo.lastName}`;
-    }
-    if (spot.Owner?.user) {
-      return `${spot.Owner.user.firstName} ${spot.Owner.user.lastName}`;
-    }
-    return 'Loading host information...';
-  };
 
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
 
-  
-
-  // const getHostInfo = () => {
-  //   // Try different possible paths to host information
-  //   if (spot.Owner?.user?.firstName) {
-  //     return `${spot.Owner.user.firstName} ${spot.Owner.user.lastName}`;
-  //   }
-  //   if (spot.Owner?.firstName) {
-  //     return `${spot.Owner.firstName} ${spot.Owner.lastName}`;
-  //   }
-  //   // If we have ownerId but no Owner info, we could fetch it
-  //   if (spot.ownerId) {
-  //     // You might want to fetch user info here
-  //     return `Host #${spot.ownerId}`;
-  //   }
-  //   return 'Unknown Host';
-  // };
+  const getHostInfo = () => {
+    // Try different possible paths to host information
+    if (spot.Owner?.user?.firstName) {
+      return `${spot.Owner.user.firstName} ${spot.Owner.user.lastName}`;
+    }
+    if (spot.Owner?.firstName) {
+      return `${spot.Owner.firstName} ${spot.Owner.lastName}`;
+    }
+    // If we have ownerId but no Owner info, we could fetch it
+    if (spot.ownerId) {
+      // You might want to fetch user info here
+      return `Host #${spot.ownerId}`;
+    }
+    return 'Unknown Host';
+  };
 
 
-    return (
-      <div className="spot-details">
-        <h1>{spot.name}</h1>
-        <div className="spot-location">
-          {spot.city}, {spot.state}, {spot.country}
+  return (
+    <div className="spot-details">
+      <h1>{spot.name}</h1>
+      <div className="spot-location">
+        {spot.city}, {spot.state}, {spot.country}
+      </div>
+
+      <div className="spot-images">
+        {spot.previewImage ? (
+          <img
+            src={spot.previewImage}
+            alt={spot.name}
+            className="main-image"
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
+            }}
+          />
+        ) : (
+          <div className="no-images">No images available</div>
+        )}
+      </div>
+
+      <div className="spot-info-container">
+        <div className="spot-description">
+          <h2 className="host-info">
+            Hosted by {getHostInfo()}
+          </h2>
+          <p>{spot.description}</p>
         </div>
-  
-        <div className="spot-images">
-          {spot.previewImage ? (
-            <img
-              src={spot.previewImage}
-              alt={spot.name}
-              className="main-image"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.src = 'https://via.placeholder.com/400x300?text=No+Image';
-              }}
-            />
-          ) : (
-            <div className="no-images">No images available</div>
-          )}
-        </div>
-  
-        <div className="spot-info-container">
-          <div className="spot-description">
-            <h2 className="host-info">
-              Hosted by {getHostName()}
-            </h2>
-            <p>{spot.description}</p>
-          </div>
 
         <div className="spot-booking">
           <div className="price-rating">
