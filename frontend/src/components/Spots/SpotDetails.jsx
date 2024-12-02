@@ -149,13 +149,21 @@ export default function SpotDetails() {
 
       {/* Reviews section */}
       <div className="reviews-section">
-        <h2>Reviews</h2>
-        {sessionUser && !isOwner && !hasReviewed && (
-          <OpenModalButton 
-            buttonText="Write a Review"
-            modalComponent={<CreateReviewModal spotId={spotId} />}
-          />
-        )}
+        <div className="reviews-header">
+          <div className="reviews-rating">
+            <RatingDisplay 
+              avgRating={spot.avgRating}
+              numReviews={spot.numReviews}
+            />
+          </div>
+          
+          {sessionUser && !isOwner && !hasReviewed && (
+            <OpenModalButton 
+              buttonText="Write a Review"
+              modalComponent={<CreateReviewModal spotId={spotId} />}
+            />
+          )}
+        </div>
         
         <div className="reviews-list">
           {reviews.map(review => (
