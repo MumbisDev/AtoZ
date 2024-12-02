@@ -1,97 +1,70 @@
 .signup-modal {
     background-color: white;
-    padding: 30px;
+    padding: 25px;
     border-radius: 15px;
-    width: 450px;
+    width: 350px;
     margin: auto;
     box-shadow: 0 2px 16px rgba(0, 0, 0, 0.15);
     max-height: calc(100vh - 100px);
     overflow-y: auto;
-    position: relative;
   }
   
   .signup-modal h1 {
-    margin: 0 0 20px 0;
+    margin: 0 0 15px 0;
     text-align: center;
-    font-size: 24px;
+    font-size: 20px;
     color: #222;
   }
   
   .signup-form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-  }
-  
-  
-  /* Scrollbar styling */
-  .signup-form::-webkit-scrollbar {
-    width: 8px;
-  }
-  
-  .signup-form::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-  }
-  
-  .signup-form::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-  }
-  
-  .signup-form::-webkit-scrollbar-thumb:hover {
-    background: #555;
+    gap: 12px;
   }
   
   .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    width: 100%;
+    gap: 4px;
   }
   
   .form-group label {
-    font-size: 16px;
+    font-size: 13px;
     color: #222;
   }
   
   .form-group input {
-    padding: 15px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
-    border-radius: 12px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 14px;
     width: 100%;
     box-sizing: border-box;
   }
   
-  .form-group input:focus {
-    outline: none;
-    border-color: #222;
-  }
-  
-  .form-group .error-message {
+  .error-message {
     color: #ff385c;
-    font-size: 14px;
-    margin-top: 4px;
-  }
-  
-  .input-error {
-    border-color: #ff385c !important;
+    font-size: 12px;
+    margin-top: 2px;
   }
   
   .signup-form button {
-    margin: 20px 0;
-    padding: 16px;
+    margin-top: 15px;
+    padding: 12px;
     background-color: #ff385c;
     color: white;
     border: none;
-    border-radius: 12px;
-    font-size: 18px;
+    border-radius: 8px;
+    font-size: 15px;
     cursor: pointer;
-    transition: background-color 0.2s;
-    width: 100%;
+    transition: all 0.2s;
   }
   
-  .signup-form button:hover {
+  .signup-form button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .signup-form button:not(:disabled):hover {
     background-color: #e31c5f;
   }
