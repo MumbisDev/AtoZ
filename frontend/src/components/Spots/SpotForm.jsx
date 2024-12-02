@@ -52,24 +52,78 @@ function SpotForm() {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name) newErrors.name = 'Name is required';
-    if (!formData.description) newErrors.description = 'Description is required';
-    if (!formData.price) newErrors.price = 'Price is required';
-    if (!formData.address) newErrors.address = 'Address is required';
-    if (!formData.city) newErrors.city = 'City is required';
-    if (!formData.state) newErrors.state = 'State is required';
-    if (!formData.country) newErrors.country = 'Country is required';
-    if (!formData.lat) newErrors.lat = 'Latitude is required';
-    if (!formData.lng) newErrors.lng = 'Longitude is required';
-    if (!formData.images[0]) newErrors.images = 'Preview image is required';
     
+    // Name validation
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+    }
+
+    // Description validation
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+    } else if (formData.description.length < 30) {
+      newErrors.description = 'Description needs 30 or more characters';
+    }
+
+    // Price validation
+    if (!formData.price) {
+      newErrors.price = 'Price is required';
+    } else if (Number(formData.price) <= 0) {
+      newErrors.price = 'Price must be greater than 0';
+    }
+
+    // Address validation
+    if (!formData.address.trim()) {
+      newErrors.address = 'Address is required';
+    }
+
+    // City validation
+    if (!formData.city.trim()) {
+      newErrors.city = 'City is required';
+    }
+
+    // State validation
+    if (!formData.state.trim()) {
+      newErrors.state = 'State is required';
+    }
+
+    // Country validation
+    if (!formData.country.trim()) {
+      newErrors.country = 'Country is required';
+    }
+
+    // Lat/Lng validation
+    if (!formData.lat) {
+      newErrors.lat = 'Latitude is required';
+    } else if (isNaN(formData.lat) || Number(formData.lat) < -90 || Number(formData.lat) > 90) {
+      newErrors.lat = 'Latitude must be between -90 and 90';
+    }
+
+    if (!formData.lng) {
+      newErrors.lng = 'Longitude is required';
+    } else if (isNaN(formData.lng) || Number(formData.lng) < -180 || Number(formData.lng) > 180) {
+      newErrors.lng = 'Longitude must be between -180 and 180';
+    }
+
+    // Image validation
+    if (!formData.images[0].trim()) {
+      newErrors.images = 'At least one image is required';
+    } else if (!formData.images[0].endsWith('.png') && 
+               !formData.images[0].endsWith('.jpg') && 
+               !formData.images[0].endsWith('.jpeg')) {
+      newErrors.images = 'Image URL must end in .png, .jpg, or .jpeg';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      // If there are validation errors, form won't submit
+      return;
+    }
 
     setIsLoading(true);
     try {
