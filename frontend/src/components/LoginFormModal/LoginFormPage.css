@@ -8,54 +8,32 @@
     box-sizing: border-box;
   }
   
-  .login-modal h1 {
-    margin: 0;
-    text-align: center;
-    font-size: 32px; /* Increased font size */
-    color: #222;
-    margin-bottom: 16px;
-  }
-  
-  .error-message {
-    color: #ff385c;
-    font-size: 18px; /* Increased font size */
-    text-align: center;
-    margin: 12px 0 20px 0;
-  }
-  
-  .login-form {
-    display: flex;
-    flex-direction: column;
-    gap: 24px; /* Increased gap */
-    width: 100%;
-  }
-  
   .login-form label {
     display: flex;
     flex-direction: column;
-    gap: 12px; /* Increased gap */
-    font-size: 18px; /* Increased font size */
+    gap: 10px; /* Default gap */
+    font-size: 16px; /* Default font size */
     color: #222;
     width: 100%;
   }
   
   .login-form input {
-    padding: 18px; /* Increased padding */
+    padding: 15px; /* Default padding */
     border: 1px solid #ddd;
-    border-radius: 16px; /* More rounded edges */
-    font-size: 18px;
+    border-radius: 12px; /* Default border radius */
+    font-size: 16px; /* Default font size */
     width: 100%;
     box-sizing: border-box;
   }
   
   .login-form button {
-    margin-top: 16px;
-    padding: 20px; /* Increased padding */
+    margin-top: 12px;
+    padding: 16px; /* Default padding */
     background-color: #ff385c;
     color: white;
     border: none;
-    border-radius: 16px; /* More rounded edges */
-    font-size: 20px; /* Increased font size */
+    border-radius: 12px; /* Default border radius */
+    font-size: 18px; /* Default font size */
     cursor: pointer;
     transition: background-color 0.2s;
     width: 100%;
