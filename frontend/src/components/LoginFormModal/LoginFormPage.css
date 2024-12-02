@@ -80,3 +80,18 @@
   .input-error {
     border-color: #ff385c !important;
   }
+
+  .demo-user-button {
+    background-color: transparent !important;
+    color: #ff385c !important;
+    border: none !important;
+    text-decoration: underline !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    padding: 8px !important;
+    margin-top: 8px !important;
+  }
+  
+  .demo-user-button:hover {
+    color: #e31c5f !important;
+  }

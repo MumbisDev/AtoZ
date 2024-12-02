@@ -13,7 +13,6 @@ function LoginFormModal() {
   const { closeModal } = useModal();
 
   useEffect(() => {
-    // Check if credential length is >= 4 and password length is >= 6
     setIsDisabled(credential.length < 4 || password.length < 6);
   }, [credential, password]);
 
@@ -21,6 +20,21 @@ function LoginFormModal() {
     e.preventDefault();
     setErrors({});
     return dispatch(sessionActions.login({ credential, password }))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
+  };
+
+  const loginDemoUser = (e) => {
+    e.preventDefault();
+    return dispatch(sessionActions.login({ 
+      credential: 'demo', 
+      password: 'password' 
+    }))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
@@ -62,6 +76,13 @@ function LoginFormModal() {
           disabled={isDisabled}
         >
           Log In
+        </button>
+        <button 
+          onClick={loginDemoUser}
+          className="demo-user-button"
+          type="button"
+        >
+          Demo User
         </button>
       </form>
     </div>
