@@ -1,9 +1,9 @@
 .login-modal {
     background-color: white;
     padding: 40px; /* Increased padding */
-    border-radius: 20px; /* Increased border radius */
+    border-radius: 40px; /* Increased border radius */
     width: 90%;
-    max-width: 500px; /* Increased max-width */
+    max-width: 750px; /* Increased max-width */
     margin: 0 auto;
     box-sizing: border-box;
   }
