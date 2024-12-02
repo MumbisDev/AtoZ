@@ -160,6 +160,21 @@
     line-height: 1.5;
     color: #222;
   }
+
+  .reviews-header button {
+    background-color: #ff385c;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .reviews-header button:hover {
+    background-color: #e31c5f;
+  }
   
   .delete-review {
     margin-top: 15px;
