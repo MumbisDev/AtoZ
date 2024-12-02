@@ -151,7 +151,9 @@ export default function SpotDetails() {
       <div className="reviews-section">
         <h2>
           <i className="fas fa-star"></i>
-          {` ${spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'}`} · Reviews
+          {reviews.length > 0 ? (
+            ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}`
+          ) : ' New'} · Reviews
         </h2>
         
         {sessionUser && !isOwner && !hasReviewed && (
