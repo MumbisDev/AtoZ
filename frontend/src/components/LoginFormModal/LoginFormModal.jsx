@@ -82,7 +82,7 @@ function LoginFormModal() {
           className="demo-user-button"
           type="button"
         >
-          Demo User
+          Log in as Demo User
         </button>
       </form>
     </div>
