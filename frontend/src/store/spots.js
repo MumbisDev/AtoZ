@@ -68,6 +68,14 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
         }
       }
 
+      const ownerResponse = await csrfFetch(
+        `/api/users/${spotData.spot.ownerId}`
+      );
+      if (ownerResponse.ok) {
+        const ownerData = await ownerResponse.json();
+        spotData.Owner = ownerData; // Add owner data to spot
+      }
+
       dispatch(loadSpotDetails(spotData));
       return spotData;
     }
