@@ -1,0 +1,91 @@
+.manage-spots-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+  }
+  
+  .manage-spots-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .create-spot-button {
+    background-color: #ff385c;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    transition: background-color 0.2s;
+  }
+  
+  .create-spot-button:hover {
+    background-color: #e31c5f;
+  }
+  
+  .spots-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 24px;
+  }
+  
+  .spot-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .spot-image-container {
+    position: relative;
+    padding-top: 75%;
+    cursor: pointer;
+  }
+  
+  .spot-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .spot-info {
+    padding: 16px;
+  }
+  
+  .spot-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  
+  .update-button,
+  .delete-button {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  
+  .update-button {
+    background-color: #4a90e2;
+    color: white;
+  }
+  
+  .delete-button {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .update-button:hover {
+    background-color: #357abd;
+  }
+  
+  .delete-button:hover {
+    background-color: #c82333;
+  }
