@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { createSpot } from '../../store/spots';
+import { useNavigate, useParams } from 'react-router-dom';
+import { createSpot, fetchSpotDetails, editSpot } from '../../store/spots';
 import './SpotForm.css';
 
 function SpotForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { spotId } = useParams();
   const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState({
@@ -17,20 +18,43 @@ function SpotForm() {
     city: '',
     state: '',
     country: '',
-    lat: 0,
-    lng: 0,
-    images: [''] // Just one image for now
+    lat: '',
+    lng: '',
+    images: ['', '', '', '', '']
   });
 
   const [errors, setErrors] = useState({});
+
+  // Fetch spot details if we're editing
+  useEffect(() => {
+    if (spotId) {
+      dispatch(fetchSpotDetails(spotId)).then((response) => {
+        if (response?.spot) {
+          // Populate form with existing spot data
+          setFormData({
+            name: response.spot.name,
+            description: response.spot.description,
+            price: response.spot.price,
+            address: response.spot.address,
+            city: response.spot.city,
+            state: response.spot.state,
+            country: response.spot.country,
+            lat: response.spot.lat || '',
+            lng: response.spot.lng || '',
+            images: response.spot.previewImage ? 
+              [response.spot.previewImage, '', '', '', ''] : 
+              ['', '', '', '', '']
+          });
+        }
+      });
+    }
+  }, [dispatch, spotId]);
 
   const validateForm = () => {
     const newErrors = {};
     if (!formData.name) newErrors.name = 'Name is required';
     if (!formData.description) newErrors.description = 'Description is required';
-    if (!formData.price || parseFloat(formData.price) <= 0) {
-      newErrors.price = 'Valid price is required';
-    }
+    if (!formData.price) newErrors.price = 'Price is required';
     if (!formData.address) newErrors.address = 'Address is required';
     if (!formData.city) newErrors.city = 'City is required';
     if (!formData.state) newErrors.state = 'State is required';
@@ -38,17 +62,6 @@ function SpotForm() {
     if (!formData.lat) newErrors.lat = 'Latitude is required';
     if (!formData.lng) newErrors.lng = 'Longitude is required';
     if (!formData.images[0]) newErrors.images = 'Preview image is required';
-    
-    // Validate latitude and longitude ranges
-    const lat = parseFloat(formData.lat);
-    const lng = parseFloat(formData.lng);
-    
-    if (isNaN(lat) || lat < -90 || lat > 90) {
-      newErrors.lat = 'Latitude must be between -90 and 90';
-    }
-    if (isNaN(lng) || lng < -180 || lng > 180) {
-      newErrors.lng = 'Longitude must be between -180 and 180';
-    }
     
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -60,26 +73,27 @@ function SpotForm() {
 
     setIsLoading(true);
     try {
-      // Clean and prepare data
       const submitData = {
         ...formData,
         price: parseFloat(formData.price),
-        lat: parseFloat(formData.lat) || 0,
-        lng: parseFloat(formData.lng) || 0,
-        images: formData.images.filter(url => url.trim()) // Remove empty strings
+        lat: parseFloat(formData.lat),
+        lng: parseFloat(formData.lng),
+        images: formData.images.filter(url => url.trim())
       };
 
-      console.log("Submitting data:", submitData); // Debug log
+      let result;
+      if (spotId) {
+        result = await dispatch(editSpot(spotId, submitData));
+      } else {
+        result = await dispatch(createSpot(submitData));
+      }
 
-      const newSpot = await dispatch(createSpot(submitData));
-      navigate(`/spots/${newSpot.id}`);
+      if (result) {
+        navigate(`/spots/${result.id || spotId}`);
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
-      if (error.errors) {
-        setErrors(error.errors);
-      } else {
-        setErrors({ submit: 'Failed to create spot. Please try again.' });
-      }
+      setErrors({ submit: error.message || 'Failed to save spot' });
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +116,7 @@ function SpotForm() {
 
   return (
     <div className="spot-form-container">
-      <h1>Create a New Spot</h1>
+      <h1>{spotId ? 'Update your Spot' : 'Create a New Spot'}</h1>
       {errors.submit && <div className="error-message">{errors.submit}</div>}
       
       <form onSubmit={handleSubmit} className="spot-form">
