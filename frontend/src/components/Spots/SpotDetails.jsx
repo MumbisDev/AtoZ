@@ -133,20 +133,20 @@ export default function SpotDetails() {
       {/* Reviews section */}
       
       <div className="reviews-section">
-        <h2>
-          <i className="fas fa-star"></i>
-          {reviews.length > 0 ? (
-            ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}`
-          ) : ' New'} · {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
-        </h2>
-        
-        {sessionUser && !isOwner && !hasReviewed && (
-          <OpenModalButton 
-            buttonText="Write a Review"
-            modalComponent={<CreateReviewModal spotId={spotId} />}
-          />
-        )}
-        
+  <div className="reviews-header">
+    <h2>
+      <i className="fas fa-star"></i>
+      {reviews.length > 0 ? (
+        ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}`
+      ) : ' New'} · {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
+    </h2>
+    {sessionUser && !isOwner && !hasReviewed && (
+      <OpenModalButton 
+        buttonText="Write a Review"
+        modalComponent={<CreateReviewModal spotId={spotId} />}
+      />
+    )}
+  </div>
         <div className="reviews-list">
           {reviews.map(review => (
             <div key={review.id} className="review-card">
