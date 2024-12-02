@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { fetchSpotDetails } from '../../store/spots';
+import { useParams, useNavigate } from 'react-router-dom';
+import { fetchSpotDetails, deleteSpot } from '../../store/spots';
 import { fetchSpotReviews, deleteReview } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
@@ -10,6 +10,7 @@ import './SpotDetails.css';
 // Move component to separate function declaration
 export default function SpotDetails() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { spotId } = useParams();
   const sessionUser = useSelector(state => state.session.user);
   const spotData = useSelector(state => state.spots.singleSpot);
@@ -17,9 +18,13 @@ export default function SpotDetails() {
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
-  const host = spot?.Owner?.user;
+  const [hostInfo, setHostInfo] = useState(null);
 
   useEffect(() => {
+    setIsLoaded(false);
+    setError(null);
+    setHostInfo(null); // Reset host info
+
     const loadSpotData = async () => {
       try {
         await dispatch(fetchSpotDetails(spotId));
@@ -33,15 +38,45 @@ export default function SpotDetails() {
     };
     
     loadSpotData();
-  }, [dispatch, spotId]);
+  }, [dispatch, spotId]); // Dependencies include spotId
+
+  // Fetch owner info when spot changes
+  useEffect(() => {
+    const fetchOwnerInfo = async () => {
+      if (spot?.ownerId) {
+        try {
+          const response = await fetch(`/api/users/${spot.ownerId}`);
+          if (response.ok) {
+            const userData = await response.json();
+            setHostInfo(userData);
+          }
+        } catch (err) {
+          console.error("Error fetching host info:", err);
+        }
+      }
+    };
+
+    fetchOwnerInfo();
+  }, [spot?.ownerId]); // Depend on ownerId changes
 
   if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!spot) return <div>Spot not found</div>;
 
+
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
 
+  const getHostInfo = () => {
+    if (spot.Owner?.user?.firstName) {
+      return `${spot.Owner.user.firstName} ${spot.Owner.user.lastName}`;
+    }
+    if (hostInfo?.firstName) {
+      return `${hostInfo.firstName} ${hostInfo.lastName}`;
+    }
+    return 'Loading host information...';
+  };
+  
   return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
@@ -68,11 +103,7 @@ export default function SpotDetails() {
       <div className="spot-info-container">
         <div className="spot-description">
           <h2 className="host-info">
-            {host ? (
-              `Hosted by ${host.firstName} ${host.lastName}`
-            ) : (
-              'Loading host information...'
-            )}
+            Hosted by {getHostInfo()}
           </h2>
           <p>{spot.description}</p>
         </div>
@@ -84,13 +115,40 @@ export default function SpotDetails() {
             </div>
             <div className="rating">
               <i className="fas fa-star"></i>
-              {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
-              {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
+              {reviews.length > 0 ? (
+            ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}`
+          ) : ' New'} · {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
             </div>
           </div>
-        </div>
+
+          <button 
+    className="reserve-button"
+    onClick={() => alert('Feature coming soon!')}
+    disabled={isOwner}
+  >
+    Reserve
+  </button>
+</div>
       </div>
 
+      {isOwner && (
+        <div className="owner-actions">
+          <button onClick={() => navigate(`/spots/${spotId}/edit`)} className="edit-button">
+            Edit Spot
+          </button>
+          <button onClick={() => {
+            if (window.confirm('Are you sure you want to delete this spot?')) {
+              dispatch(deleteSpot(spotId));
+              navigate('/');
+            }
+          }} className="delete-button">
+            Delete Spot
+          </button>
+        </div>
+      )}
+
+      {/* Reviews section */}
+      
       <div className="reviews-section">
         <h2>
           <i className="fas fa-star"></i>
