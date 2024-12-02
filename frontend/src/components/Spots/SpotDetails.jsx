@@ -7,7 +7,8 @@ import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
 import './SpotDetails.css';
 
-function SpotDetails() {
+// Move component to separate function declaration
+export default function SpotDetails() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { spotId } = useParams();
@@ -17,21 +18,11 @@ function SpotDetails() {
   const reviews = useSelector(state => Object.values(state.reviews.spot));
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
-  const [ setOwner] = useState(null);
-  const host = spot?.Owner?.user; // Get the nested user data
 
   useEffect(() => {
     const loadSpotData = async () => {
       try {
         await dispatch(fetchSpotDetails(spotId));
-        // Fetch owner data
-        if (spot?.ownerId) {
-          const ownerResponse = await fetch(`/api/users/${spot.ownerId}`);
-          if (ownerResponse.ok) {
-            const ownerData = await ownerResponse.json();
-            setOwner(ownerData);
-          }
-        }
         await dispatch(fetchSpotReviews(spotId));
         setIsLoaded(true);
       } catch (err) {
@@ -42,27 +33,16 @@ function SpotDetails() {
     };
     
     loadSpotData();
-  }, [dispatch, spotId, spot?.ownerId]);
+  }, [dispatch, spotId]);
 
-  // Add early return if spot is not loaded
-  if (!isLoaded || !spot) return <div>Loading...</div>;
+  if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
+  if (!spot) return <div>Spot not found</div>;
 
+  const host = spot.Owner?.user;
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
 
-  const handleDelete = async () => {
-    if (window.confirm('Are you sure you want to delete this spot?')) {
-      await dispatch(deleteSpot(spotId));
-      navigate('/');
-    }
-  };
-
-  const handleEdit = () => {
-    navigate(`/spots/${spotId}/edit`);
-  };
-
- 
   return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
@@ -114,28 +94,30 @@ function SpotDetails() {
 
       {isOwner && (
         <div className="owner-actions">
-          <button onClick={handleEdit} className="edit-button">Edit Spot</button>
-          <button onClick={handleDelete} className="delete-button">Delete Spot</button>
+          <button onClick={() => navigate(`/spots/${spotId}/edit`)} className="edit-button">
+            Edit Spot
+          </button>
+          <button onClick={() => {
+            if (window.confirm('Are you sure you want to delete this spot?')) {
+              dispatch(deleteSpot(spotId));
+              navigate('/');
+            }
+          }} className="delete-button">
+            Delete Spot
+          </button>
         </div>
       )}
 
+      {/* Reviews section */}
       <div className="reviews-section">
         <h2>Reviews</h2>
-        <div className="reviews-header">
-          <div className="rating-summary">
-            <i className="fas fa-star"></i>
-            {spot.avgRating ? Number(spot.avgRating).toFixed(1) : 'New'} · 
-            {spot.numReviews || 0} {(spot.numReviews || 0) === 1 ? 'review' : 'reviews'}
-          </div>
-          
-          {sessionUser && !isOwner && !hasReviewed && (
-            <OpenModalButton 
-              buttonText="Write a Review"
-              modalComponent={<CreateReviewModal spotId={spotId} />}
-            />
-          )}
-        </div>
-
+        {sessionUser && !isOwner && !hasReviewed && (
+          <OpenModalButton 
+            buttonText="Write a Review"
+            modalComponent={<CreateReviewModal spotId={spotId} />}
+          />
+        )}
+        
         <div className="reviews-list">
           {reviews.map(review => (
             <div key={review.id} className="review-card">
@@ -161,5 +143,3 @@ function SpotDetails() {
     </div>
   );
 }
-
-export default SpotDetails;
