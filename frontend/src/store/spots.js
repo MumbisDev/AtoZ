@@ -34,14 +34,13 @@ const removeSpot = (spotId) => ({
   spotId,
 });
 
-// Thunk Action Creators
 export const fetchSpots = () => async (dispatch) => {
   try {
     const response = await csrfFetch("/api/spots");
     if (response.ok) {
       const data = await response.json();
-      console.log("API Response:", data); // Debug log
-      dispatch(loadSpots(data.Spots || [])); // Ensure we're accessing the Spots array
+      console.log("API Response:", data);
+      dispatch(loadSpots(data.Spots || []));
       return data.Spots || [];
     }
   } catch (error) {
@@ -52,13 +51,11 @@ export const fetchSpots = () => async (dispatch) => {
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
   try {
-    // First get the basic spot details
     const response = await csrfFetch(`/api/spots/${spotId}`);
     if (response.ok) {
       const data = await response.json();
       console.log("Spot data:", data);
 
-      // Get the preview image from the landing page endpoint
       const previewResponse = await csrfFetch(`/api/spots`);
       if (previewResponse.ok) {
         const allSpots = await previewResponse.json();
@@ -73,7 +70,7 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
       const ownerResponse = await csrfFetch(`/api/users/${data.spot.ownerId}`);
       if (ownerResponse.ok) {
         const ownerData = await ownerResponse.json();
-        // Update spot data with owner info
+
         data.spot.Owner = ownerData;
       }
 
@@ -88,7 +85,6 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
 
 export const createSpot = (spotData) => async (dispatch) => {
   try {
-    // First create the spot
     const response = await csrfFetch("/api/spots", {
       method: "POST",
       headers: {
@@ -112,12 +108,11 @@ export const createSpot = (spotData) => async (dispatch) => {
       throw new Error(errorData.message || "Failed to create spot");
     }
 
-    const { spot } = await response.json(); // Destructure the spot from the response
+    const { spot } = await response.json();
     console.log("Created spot:", spot);
 
-    // Now we have the correct spot.id
     if (spotData.images && spotData.images.length > 0) {
-      console.log("Adding image for spot ID:", spot.id); // Debug log
+      console.log("Adding image for spot ID:", spot.id);
       const imageResponse = await csrfFetch(`/api/spots/${spot.id}/images`, {
         method: "POST",
         headers: {
@@ -179,7 +174,7 @@ const spotsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOTS: {
       const allSpots = {};
-      // Make sure action.spots is an array before using forEach
+
       if (Array.isArray(action.spots)) {
         action.spots.forEach((spot) => {
           allSpots[spot.id] = spot;

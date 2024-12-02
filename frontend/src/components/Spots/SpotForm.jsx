@@ -25,12 +25,10 @@ function SpotForm() {
 
   const [errors, setErrors] = useState({});
 
-  // Fetch spot details if we're editing
   useEffect(() => {
     if (spotId) {
       dispatch(fetchSpotDetails(spotId)).then((response) => {
         if (response?.spot) {
-          // Populate form with existing spot data
           setFormData({
             name: response.spot.name,
             description: response.spot.description,
@@ -53,46 +51,38 @@ function SpotForm() {
   const validateForm = () => {
     const newErrors = {};
     
-    // Name validation
     if (!formData.name.trim()) {
       newErrors.name = 'Name is required';
     }
 
-    // Description validation
     if (!formData.description.trim()) {
       newErrors.description = 'Description is required';
     } else if (formData.description.length < 30) {
       newErrors.description = 'Description needs 30 or more characters';
     }
 
-    // Price validation
     if (!formData.price) {
       newErrors.price = 'Price is required';
     } else if (Number(formData.price) <= 0) {
       newErrors.price = 'Price must be greater than 0';
     }
 
-    // Address validation
     if (!formData.address.trim()) {
       newErrors.address = 'Address is required';
     }
 
-    // City validation
     if (!formData.city.trim()) {
       newErrors.city = 'City is required';
     }
 
-    // State validation
     if (!formData.state.trim()) {
       newErrors.state = 'State is required';
     }
 
-    // Country validation
     if (!formData.country.trim()) {
       newErrors.country = 'Country is required';
     }
 
-    // Lat/Lng validation
     if (!formData.lat) {
       newErrors.lat = 'Latitude is required';
     } else if (isNaN(formData.lat) || Number(formData.lat) < -90 || Number(formData.lat) > 90) {
@@ -105,7 +95,6 @@ function SpotForm() {
       newErrors.lng = 'Longitude must be between -180 and 180';
     }
 
-    // Image validation
     if (!formData.images[0].trim()) {
       newErrors.images = 'At least one image is required';
     } else if (!formData.images[0].endsWith('.png') && 
@@ -121,7 +110,6 @@ function SpotForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
-      // If there are validation errors, form won't submit
       return;
     }
 

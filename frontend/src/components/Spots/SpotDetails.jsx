@@ -7,7 +7,6 @@ import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
 import './SpotDetails.css';
 
-// Move component to separate function declaration
 export default function SpotDetails() {
   const dispatch = useDispatch();
   const { spotId } = useParams();
@@ -22,7 +21,7 @@ export default function SpotDetails() {
   useEffect(() => {
     setIsLoaded(false);
     setError(null);
-    setHostInfo(null); // Reset host info
+    setHostInfo(null); 
 
     const loadSpotData = async () => {
       try {
@@ -37,9 +36,8 @@ export default function SpotDetails() {
     };
     
     loadSpotData();
-  }, [dispatch, spotId]); // Dependencies include spotId
+  }, [dispatch, spotId]);
 
-  // Fetch owner info when spot changes
   useEffect(() => {
     const fetchOwnerInfo = async () => {
       if (spot?.ownerId) {
@@ -56,8 +54,7 @@ export default function SpotDetails() {
     };
 
     fetchOwnerInfo();
-  }, [spot?.ownerId]); // Depend on ownerId changes
-
+  }, [spot?.ownerId]); 
   if (!isLoaded) return <div>Loading...</div>;
   if (error) return <div className="error-message">{error}</div>;
   if (!spot) return <div>Spot not found</div>;

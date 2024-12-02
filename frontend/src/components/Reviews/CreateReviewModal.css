@@ -91,7 +91,6 @@
     background-color: #e31c5f;
   }
   
-  /* Optional animation for star hover effect */
   @keyframes pulse {
     0% { transform: scale(1); }
     50% { transform: scale(1.1); }

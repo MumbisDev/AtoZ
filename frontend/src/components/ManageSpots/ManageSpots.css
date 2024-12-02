@@ -63,7 +63,7 @@
   }
   .update-button,
 .delete-button,
-.spot-actions > button {  /* This targets the OpenModalButton */
+.spot-actions > button { 
   flex: 1;
   padding: 8px;
   border: none;

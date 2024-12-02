@@ -19,12 +19,10 @@
     transform: translateY(-2px);
   }
   
-  /* Customize the tooltip appearance */
   .spot-card[title] {
     position: relative;
   }
   
-  /* Style the native tooltip */
   .spot-card[title]:hover::before {
     content: attr(title);
     position: absolute;
@@ -41,7 +39,6 @@
     pointer-events: none;
   }
   
-  /* Add a small arrow to the tooltip */
   .spot-card[title]:hover::after {
     content: '';
     position: absolute;
@@ -57,7 +54,7 @@
   
   .spot-image-container {
     position: relative;
-    padding-top: 75%; /* 4:3 Aspect Ratio */
+    padding-top: 75%; 
   }
   
   .spot-image {

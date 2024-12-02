@@ -1,11 +1,9 @@
 import { csrfFetch } from "./csrf";
 
-// Action Types
 const LOAD_SPOT_REVIEWS = "reviews/LOAD_SPOT_REVIEWS";
 const ADD_REVIEW = "reviews/ADD_REVIEW";
 const REMOVE_REVIEW = "reviews/REMOVE_REVIEW";
 
-// Action Creators
 const loadSpotReviews = (reviews) => ({
   type: LOAD_SPOT_REVIEWS,
   reviews,
@@ -21,14 +19,13 @@ const removeReview = (reviewId) => ({
   reviewId,
 });
 
-// Thunk Action Creators
 export const fetchSpotReviews = (spotId) => async (dispatch) => {
   try {
     const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
     if (response.ok) {
       const data = await response.json();
-      console.log("Reviews API Response:", data); // Debug log
-      dispatch(loadSpotReviews(data.Reviews || [])); // Ensure we're accessing the Reviews array
+      console.log("Reviews API Response:", data);
+      dispatch(loadSpotReviews(data.Reviews || []));
       return data.Reviews || [];
     }
   } catch (error) {
@@ -81,7 +78,7 @@ const reviewsReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOAD_SPOT_REVIEWS: {
       const spotReviews = {};
-      // Make sure action.reviews is an array before using forEach
+
       if (Array.isArray(action.reviews)) {
         action.reviews.forEach((review) => {
           spotReviews[review.id] = review;
