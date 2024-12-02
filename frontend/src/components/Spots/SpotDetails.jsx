@@ -19,6 +19,10 @@ export default function SpotDetails() {
   const [error, setError] = useState(null);
   const [hostInfo, setHostInfo] = useState(null);
 
+  const sortedReviews = [...reviews].sort((a, b) => 
+    new Date(b.createdAt) - new Date(a.createdAt)
+  );
+
   useEffect(() => {
     setIsLoaded(false);
     setError(null);
@@ -133,41 +137,46 @@ export default function SpotDetails() {
       {/* Reviews section */}
       
       <div className="reviews-section">
-  <div className="reviews-header">
-    <h2>
-      <i className="fas fa-star"></i>
-      {reviews.length > 0 ? (
-        ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)}`
-      ) : ' New'} · {reviews.length} {reviews.length === 1 ? 'Review' : 'Reviews'}
-    </h2>
-    {sessionUser && !isOwner && !hasReviewed && (
-      <OpenModalButton 
-        buttonText="Write a Review"
-        modalComponent={<CreateReviewModal spotId={spotId} />}
-      />
+      <div className="reviews-header">
+  <h2>
+    <i className="fas fa-star"></i>
+    {reviews.length > 0 ? (
+      <>
+        {` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)} · ${reviews.length} ${reviews.length === 1 ? 'Review' : 'Reviews'}`}
+      </>
+    ) : (
+      ' New'
     )}
-  </div>
-        <div className="reviews-list">
-          {reviews.map(review => (
-            <div key={review.id} className="review-card">
-              <div className="review-header">
-                <h3>{review.User?.firstName}</h3>
-                <span className="review-date">
-                  {new Date(review.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-              <p>{review.review}</p>
-              {sessionUser?.id === review.userId && (
-                <button 
-                  onClick={() => dispatch(deleteReview(review.id))}
-                  className="delete-review"
-                >
-                  Delete Review
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
+  </h2>
+  {sessionUser && !isOwner && !hasReviewed && (
+    <OpenModalButton 
+      buttonText="Write a Review"
+      modalComponent={<CreateReviewModal spotId={spotId} />}
+    />
+  )}
+</div>
+
+<div className="reviews-list">
+  {sortedReviews.map(review => (
+    <div key={review.id} className="review-card">
+      <div className="review-header">
+        <h3>{review.User?.firstName}</h3>
+        <span className="review-date">
+          {new Date(review.createdAt).toLocaleDateString()}
+        </span>
+      </div>
+      <p>{review.review}</p>
+      {sessionUser?.id === review.userId && (
+        <button 
+          onClick={() => dispatch(deleteReview(review.id))}
+          className="delete-review"
+        >
+          Delete Review
+        </button>
+      )}
+    </div>
+  ))}
+</div>
       </div>
     </div>
   );
