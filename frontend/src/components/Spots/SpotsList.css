@@ -12,11 +12,48 @@
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.2s;
+    position: relative;
   }
   
   .spot-card:hover {
     transform: translateY(-2px);
   }
+  
+  /* Customize the tooltip appearance */
+  .spot-card[title] {
+    position: relative;
+  }
+  
+  /* Style the native tooltip */
+  .spot-card[title]:hover::before {
+    content: attr(title);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 8px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    font-size: 14px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 1000;
+    pointer-events: none;
+  }
+  
+  /* Add a small arrow to the tooltip */
+  .spot-card[title]:hover::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+    pointer-events: none;
+  }
+  
   
   .spot-image-container {
     position: relative;
