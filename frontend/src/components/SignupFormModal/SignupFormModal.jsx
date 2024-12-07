@@ -17,7 +17,6 @@ function SignupFormModal() {
   const { closeModal } = useModal();
 
   useEffect(() => {
-    // Check all validation criteria
     const formIsValid = 
       email.length > 0 &&
       username.length >= 4 && 
