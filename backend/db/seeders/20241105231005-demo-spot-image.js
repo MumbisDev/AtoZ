@@ -53,7 +53,7 @@ module.exports = {
       },
       {
         spotId: 5,
-        url: "https://blog.savills.com/_images/spinney-cottage-1.jpg",
+        url: "https://cdn.landsearch.com/listings/4F5Ss/small/semora-nc-130107936.jpg",
         preview: false,
         createdAt: new Date(),
         updatedAt: new Date(),
