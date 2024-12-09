@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { createSpot, fetchSpotDetails, editSpot } from '../../store/spots';
 import './SpotForm.css';
 
+
 function SpotForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -2,9 +2,10 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { fetchSpotDetails } from '../../store/spots';
-import { fetchSpotReviews, deleteReview } from '../../store/reviews';
+import { fetchSpotReviews } from '../../store/reviews';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import CreateReviewModal from '../Reviews/CreateReviewModal';
+import DeleteReviewModal from '../DeleteReviewModal/DeleteReviewModal'
 import './SpotDetails.css';
 
 export default function SpotDetails() {
@@ -151,7 +152,7 @@ export default function SpotDetails() {
     </h2>
     {sessionUser && !isOwner && !hasReviewed && (
       <OpenModalButton 
-        buttonText="Write a Review"
+        buttonText="Post Your Review"
         modalComponent={<CreateReviewModal spotId={spotId} />}
       />
     )}
@@ -173,14 +174,13 @@ export default function SpotDetails() {
               </span>
             </div>
             <p>{review.review}</p>
-            {sessionUser?.id === review.userId && (
-              <button 
-                onClick={() => dispatch(deleteReview(review.id))}
-                className="delete-review"
-              >
-                Delete Review
-              </button>
-            )}
+           {sessionUser?.id === review.userId && (
+  <OpenModalButton 
+    buttonText="Delete"
+    modalComponent={<DeleteReviewModal reviewId={review.id} />}
+    className="delete-review"
+  />
+)}
           </div>
       ))}
     </div>

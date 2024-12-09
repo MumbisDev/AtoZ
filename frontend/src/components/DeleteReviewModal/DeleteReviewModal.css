@@ -1,0 +1,52 @@
+.delete-review-modal {
+    background-color: white;
+    padding: 25px;
+    border-radius: 15px;
+    width: 350px;
+  }
+  
+  .delete-review-modal h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  .delete-review-modal p {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .yes-button,
+  .no-button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.2s;
+  }
+  
+  .yes-button {
+    background-color: #ff385c;
+    color: white;
+  }
+  
+  .no-button {
+    background-color: #6c757d;
+    color: white;
+  }
+  
+  .yes-button:hover {
+    background-color: #e31c5f;
+  }
+  
+  .no-button:hover {
+    background-color: #5a6268;
+  }
