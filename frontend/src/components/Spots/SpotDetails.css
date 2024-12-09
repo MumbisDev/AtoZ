@@ -182,29 +182,20 @@
     background-color: #e31c5f;
   }
   
-  .delete-review,
-.delete-review > button {
-  background-color: #ff385c;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 15px;
-}
-
-.delete-review:hover,
-.delete-review > button:hover {
-  background-color: #e31c5f;
-}
-
-/* Remove any additional styling the OpenModalButton might add */
-.delete-review > button {
-  width: auto;
-  margin: 0;
-  padding: 8px 16px;
-}
+  .delete-review-button {
+    background-color: #ff385c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 15px;
+  }
+  
+  .delete-review-button:hover {
+    background-color: #e31c5f;
+  }
   .spot-images {
     width: 100%;
     max-width: 1200px;
