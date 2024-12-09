@@ -33,7 +33,7 @@ module.exports = {
       {
         spotId: 2,
         url: "https://lifeonshadylane.com/wp-content/uploads/2017/04/7f5af549fc6a2a630cf6367256319a7d.jpg",
-        preview: false,
+        preview: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -54,7 +54,7 @@ module.exports = {
       {
         spotId: 5,
         url: "https://cdn.landsearch.com/listings/4F5Ss/small/semora-nc-130107936.jpg",
-        preview: false,
+        preview: true,
         createdAt: new Date(),
         updatedAt: new Date(),
       },
