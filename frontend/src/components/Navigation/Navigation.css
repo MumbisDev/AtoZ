@@ -1,16 +1,11 @@
 .navigation {
   border-bottom: 1px solid #dddddd;
-  padding: 16px 0;
-  position: sticky;
-  top: 0;
-  background-color: white;
-  z-index: 100;
+  padding: 20px 40px; /* Increased padding */
 }
 
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -21,52 +16,20 @@
   align-items: center;
   text-decoration: none;
   color: #ff385c;
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.logo {
-  font-size: 32px;
-  margin-right: 8px;
-}
-
-.logo-text {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .logo-text {
-    display: inline;
-  }
+  font-size: 32px; /* Bigger logo */
 }
 
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 24px; /* Increased gap */
 }
 
-.create-spot-button {
-  background: none;
-  border: none;
-  padding: 8px 16px;
-  font-size: 14px;
-  color: #222222;
-  text-decoration: none;
-  border-radius: 20px;
-  transition: background-color 0.2s;
-}
-
-.create-spot-button:hover {
-  background-color: #f7f7f7;
-}
-
-/* Update ProfileButton styles */
 .profile-button {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
+  gap: 12px;
+  padding: 8px 16px;
   border: 1px solid #dddddd;
   border-radius: 21px;
   background-color: white;
@@ -74,55 +37,18 @@
   transition: box-shadow 0.2s;
 }
 
-.profile-button:hover {
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.profile-button svg {
+  font-size: 30px; /* Bigger user icon */
 }
 
-.profile-dropdown {
-  position: absolute;
-  right: 20px;
-  top: 60px;
-  background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.12);
-  padding: 8px 0;
-  min-width: 200px;
+.create-spot-button {
+  color: #222222;
+  text-decoration: none;
+  padding: 12px 16px;
+  border-radius: 20px;
+  font-weight: 500;
 }
 
-.profile-dropdown.hidden {
-  display: none;
-}
-
-.profile-dropdown li {
-  padding: 8px 16px;
-  list-style-type: none;
-}
-
-.profile-dropdown li:hover {
+.create-spot-button:hover {
   background-color: #f7f7f7;
-}
-
-.profile-dropdown button {
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.profile-dropdown button:hover {
-  background-color: #f7f7f7;
-}
-
-/* Update divider styling */
-.profile-dropdown li.divider {
-  border-top: 1px solid #dddddd;
-  margin: 8px 0;
-  padding: 0;
-}
-
-.profile-dropdown li.divider:hover {
-  background: none;
 }

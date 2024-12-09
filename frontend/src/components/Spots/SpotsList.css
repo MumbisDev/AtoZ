@@ -1,105 +1,92 @@
 .spots-grid {
-    display: grid;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Wider cards */
+  gap: 24px;
+  padding: 24px 40px; /* Match navigation padding */
+  max-width: 1600px; /* Larger max width */
+  margin: 0 auto;
+}
+
+.spot-card {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.spot-card:hover {
+  transform: translateY(-2px);
+}
+
+.spot-image-container {
+  position: relative;
+  padding-top: 100%; /* Square aspect ratio */
+  margin-bottom: 12px;
+}
+
+.spot-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.spot-info {
+  padding: 0;
+}
+
+.spot-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.spot-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 400; /* Less bold */
+}
+
+.spot-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.spot-location {
+  color: #717171;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.spot-price {
+  margin: 0;
+  font-size: 14px;
+}
+
+.spot-price span {
+  font-weight: 600;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 1440px) {
+  .spots-grid {
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 24px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
   }
-  
-  .spot-card {
-    cursor: pointer;
-    border-radius: 12px;
-    overflow: hidden;
-    transition: transform 0.2s;
-    position: relative;
+}
+
+@media (max-width: 950px) {
+  .spots-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
-  
-  .spot-card:hover {
-    transform: translateY(-2px);
+}
+
+@media (max-width: 550px) {
+  .spots-grid {
+    grid-template-columns: 1fr;
+    padding: 16px;
   }
-  
-  .spot-card[title] {
-    position: relative;
-  }
-  
-  .spot-card[title]:hover::before {
-    content: attr(title);
-    position: absolute;
-    top: -30px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 4px 8px;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    font-size: 14px;
-    border-radius: 4px;
-    white-space: nowrap;
-    z-index: 1000;
-    pointer-events: none;
-  }
-  
-  .spot-card[title]:hover::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-width: 5px;
-    border-style: solid;
-    border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
-    pointer-events: none;
-  }
-  
-  
-  .spot-image-container {
-    position: relative;
-    padding-top: 75%; 
-  }
-  
-  .spot-image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
-  }
-  
-  .spot-info {
-    padding: 12px 4px;
-  }
-  
-  .spot-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-  }
-  
-  .spot-header h3 {
-    margin: 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-  
-  .spot-rating {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-  
-  .spot-location {
-    color: #717171;
-    margin: 0;
-    margin-bottom: 8px;
-  }
-  
-  .spot-price {
-    margin: 0;
-  }
-  
-  .spot-price span {
-    font-weight: 600;
-  }
+}
