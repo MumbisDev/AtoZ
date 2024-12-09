@@ -44,7 +44,7 @@ module.exports = {
       },
       {
         spotId: 5,
-        userId: 3,
+        userId: 2,
         review: "There are several listings of the same place, what gives?",
         stars: 2,
         createdAt: new Date(),
