@@ -53,7 +53,7 @@ module.exports = {
       },
       {
         spotId: 5,
-        url: "https://lifeonshadylane.com/wp-content/uploads/2017/04/7f5af549fc6a2a630cf6367256319a7d.jpg",
+        url: "https://blog.savills.com/_images/spinney-cottage-1.jpg",
         preview: false,
         createdAt: new Date(),
         updatedAt: new Date(),
