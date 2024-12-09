@@ -55,6 +55,16 @@
   background-color: #f7f7f7;
 }
 
+.create-spot-link {
+  color: #222222;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.create-spot-link:hover {
+  text-decoration: underline;
+}
+
 /* Update ProfileButton styles */
 .profile-button {
   display: flex;

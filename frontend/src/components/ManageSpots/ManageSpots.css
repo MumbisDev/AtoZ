@@ -25,6 +25,17 @@
     background-color: #e31c5f;
   }
   
+  .create-spot-link {
+    color: #00635d;  /* Airbnb uses this teal color for text links */
+    text-decoration: none;
+    font-weight: normal;
+    cursor: pointer;
+  }
+  
+  .create-spot-link:hover {
+    text-decoration: underline;
+  }
+
   .spots-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
