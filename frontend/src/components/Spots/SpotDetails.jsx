@@ -63,19 +63,13 @@ export default function SpotDetails() {
   const isOwner = sessionUser && sessionUser.id === spot.ownerId;
   const hasReviewed = sessionUser && reviews.some(review => review.userId === sessionUser.id);
 
-  const getHostInfo = () => {
-    if (spot.Owner?.user?.firstName) {
-      return `${spot.Owner.user.firstName} ${spot.Owner.user.lastName}`;
-    }
-    if (hostInfo?.firstName) {
-      return `${hostInfo.firstName} ${hostInfo.lastName}`;
-    }
-    return 'Loading host information...';
-  };
-  
-  console.log('Reviews length:', reviews.length);
-console.log('Session user:', sessionUser);
-console.log('Is owner:', isOwner);
+  console.log({
+    reviews,
+    sessionUser,
+    isOwner,
+    hasReviewed,
+    spotData
+  });
 
 const getRatingText = () => {
   if (reviews.length > 0) {
@@ -149,7 +143,11 @@ const getRatingText = () => {
   <div className="reviews-header">
     <h2>
       <i className="fas fa-star"></i>
-      {' ' + getRatingText()}
+      {reviews && reviews.length > 0 ? (
+              ` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)} · ${reviews.length} ${reviews.length === 1 ? 'Review' : 'Reviews'}`
+            ) : (
+              sessionUser && !isOwner ? ' Be the first to post a review!' : ' New'
+            )}
     </h2>
     {sessionUser && !isOwner && !hasReviewed && (
       <OpenModalButton 
