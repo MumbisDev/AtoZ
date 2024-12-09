@@ -149,33 +149,39 @@ export default function SpotDetails() {
     )}
   </div>
 
-  <div className="reviews-list">
-    {[...reviews]
-      .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-      .map(review => (
-        <div key={review.id} className="review-card">
-          <div className="review-header">
-            <h3>{review.User?.firstName}</h3>
-            <span className="review-date">
-              {new Date(review.createdAt).toLocaleDateString('en-US', {
-                month: 'long',
-                year: 'numeric'
-              })}
-            </span>
+  {reviews.length > 0 ? (
+    <div className="reviews-list">
+      {[...reviews]
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+        .map(review => (
+          <div key={review.id} className="review-card">
+            <div className="review-header">
+              <h3>{review.User?.firstName}</h3>
+              <span className="review-date">
+                {new Date(review.createdAt).toLocaleDateString('en-US', {
+                  month: 'long',
+                  year: 'numeric'
+                })}
+              </span>
+            </div>
+            <p>{review.review}</p>
+            {sessionUser?.id === review.userId && (
+              <button 
+                onClick={() => dispatch(deleteReview(review.id))}
+                className="delete-review"
+              >
+                Delete Review
+              </button>
+            )}
           </div>
-          <p>{review.review}</p>
-          {sessionUser?.id === review.userId && (
-            <button 
-              onClick={() => dispatch(deleteReview(review.id))}
-              className="delete-review"
-            >
-              Delete Review
-            </button>
-          )}
-        </div>
-    ))}
-  </div>
-</div>
+      ))}
     </div>
+  ) : (
+    sessionUser && !isOwner && (
+      <p className="no-reviews-message">Be the first to post a review!</p>
+    )
+  )}
+</div>
+</div>
   );
 }

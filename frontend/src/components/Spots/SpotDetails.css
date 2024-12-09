@@ -121,6 +121,12 @@
     padding-top: 24px;
     border-top: 1px solid #dddddd;
   }
+
+  .no-reviews-message {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #717171;
+  }
   
   .reviews-list {
     display: flex;
