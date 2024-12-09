@@ -138,7 +138,7 @@ export default function SpotDetails() {
           {` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)} · ${reviews.length} ${reviews.length === 1 ? 'Review' : 'Reviews'}`}
         </>
       ) : (
-        ' New'
+        sessionUser && !isOwner ? ' Be the first to post a review!' : ' New'
       )}
     </h2>
     {sessionUser && !isOwner && !hasReviewed && (
