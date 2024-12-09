@@ -185,9 +185,7 @@ export default function SpotDetails() {
       ))}
     </div>
   ) : (
-    sessionUser && !isOwner && (
-      <p className="no-reviews-message">Be the first to post a review!</p>
-    )
+    console.log('lol')
   )}
 </div>
 </div>
