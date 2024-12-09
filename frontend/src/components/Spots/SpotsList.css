@@ -1,11 +1,11 @@
 .spots-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 24px;
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  padding: 20px 40px;
+  max-width: 100%;
+  margin: 0 auto;
+}
   
   .spot-card {
     cursor: pointer;
@@ -54,18 +54,20 @@
   
   .spot-image-container {
     position: relative;
-    padding-top: 75%; 
-  }
-  
-  .spot-image {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 12px;
+    padding-top: 100%; /* This makes it perfectly square */
   }
+
+  .spot-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
   
   .spot-info {
     padding: 12px 4px;
@@ -102,4 +104,22 @@
   
   .spot-price span {
     font-weight: 600;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .spots-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+  @media screen and (max-width: 768px) {
+    .spots-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  
+  @media screen and (max-width: 480px) {
+    .spots-grid {
+      grid-template-columns: 1fr;
+    }
   }
