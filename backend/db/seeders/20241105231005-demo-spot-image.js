@@ -37,6 +37,20 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        spotId: 3,
+        url: "https://res.cloudinary.com/g5-assets-cld/image/upload/x_42,y_0,h_1304,w_2086,c_crop/q_auto,f_auto,fl_lossy,g_center,h_750,w_1200/g5/g5-c-5k2301wsk-eci-group/g5-cl-1n0t0ytxyc-eci-group-davenport-fl/uploads/Exterior7_s3fafj.jpg",
+        preview: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        spotId: 4,
+        url: "https://lifeonshadylane.com/wp-content/uploads/2017/04/7f5af549fc6a2a630cf6367256319a7d.jpg",
+        preview: true,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
