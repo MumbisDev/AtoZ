@@ -10,7 +10,6 @@
   padding: 0 40px; /* Add padding to the container instead */
 }
 
-
 .home-link {
   display: flex;
   align-items: center;
@@ -120,4 +119,19 @@
 
 .profile-dropdown li.divider:hover {
   background: none;
+}
+
+button {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  border: 1px solid #dddddd;
+  border-radius: 25px;  /* Increased for larger button */
+  padding: 8px 16px;    /* Increased padding */
+  cursor: pointer;
+}
+
+/* Make the user icon bigger */
+button > svg {
+  font-size: 28px;      /* Increased icon size */
 }
