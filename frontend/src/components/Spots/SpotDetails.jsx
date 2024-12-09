@@ -85,7 +85,7 @@ const getRatingText = () => {
     if (!isOwner) {
       return 'Be the first to post a review!';
     }
-    return 'New';
+    return 'Beans';
   }
 };
 
