@@ -73,6 +73,22 @@ export default function SpotDetails() {
     return 'Loading host information...';
   };
   
+  console.log('Reviews length:', reviews.length);
+console.log('Session user:', sessionUser);
+console.log('Is owner:', isOwner);
+
+const getRatingText = () => {
+  if (reviews.length > 0) {
+    const avgRating = reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length;
+    return `${avgRating.toFixed(1)} · ${reviews.length} ${reviews.length === 1 ? 'Review' : 'Reviews'}`;
+  } else {
+    if (sessionUser && !isOwner) {
+      return 'Be the first to post a review!';
+    }
+    return 'New';
+  }
+};
+
   return (
     <div className="spot-details">
       <h1>{spot.name}</h1>
@@ -133,13 +149,7 @@ export default function SpotDetails() {
   <div className="reviews-header">
     <h2>
       <i className="fas fa-star"></i>
-      {reviews.length > 0 ? (
-        <>
-          {` ${(reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length).toFixed(1)} · ${reviews.length} ${reviews.length === 1 ? 'Review' : 'Reviews'}`}
-        </>
-      ) : (
-        sessionUser && !isOwner ? ' Be the first to post a review!' : 'Burger '
-      )}
+      {' ' + getRatingText()}
     </h2>
     {sessionUser && !isOwner && !hasReviewed && (
       <OpenModalButton 
