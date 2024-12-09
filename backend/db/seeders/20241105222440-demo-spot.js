@@ -65,6 +65,20 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        ownerId: 2,
+        address: "456 Elm St",
+        city: "Los Angeles",
+        state: "CA",
+        country: "USA",
+        lat: 34.0522,
+        lng: -118.2437,
+        name: "Cozy Cottage",
+        description: "A cozy cottage with an ocean view.",
+        price: 200.0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
