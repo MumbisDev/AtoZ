@@ -71,17 +71,17 @@ export default function SpotDetails() {
     spotData
   });
 
-const getRatingText = () => {
-  if (reviews.length > 0) {
-    const avgRating = reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length;
-    return `${avgRating.toFixed(1)} · ${reviews.length} ${reviews.length === 1 ? 'Review' : 'Reviews'}`;
-  } else {
-    if (!isOwner) {
-      return 'Be the first to post a review!';
+
+  const getHostInfo = () => {
+    if (spot.Owner?.user?.firstName) {
+      return `${spot.Owner.user.firstName} ${spot.Owner.user.lastName}`;
     }
-    return 'Beans';
-  }
-};
+    if (hostInfo?.firstName) {
+      return `${hostInfo.firstName} ${hostInfo.lastName}`;
+    }
+    return 'Loading host information...';
+  };
+  
 
   return (
     <div className="spot-details">
