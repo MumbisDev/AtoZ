@@ -248,26 +248,15 @@ function SpotForm() {
         </div>
 
         <div className="form-section">
-          <h2>Tell us about your place</h2>
-          
-          <div className="form-group">
-            <input
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Name of your place"
-              className={errors.name ? 'error' : ''}
-            />
-            {errors.name && <span className="error-message">{errors.name}</span>}
-          </div>
+          <h2>Describe your place to guests</h2>
+          <p>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
 
           <div className="form-group">
             <textarea
               name="description"
               value={formData.description}
               onChange={handleChange}
-              placeholder="Description"
+              placeholder="Please write at least 30 characters"
               className={errors.description ? 'error' : ''}
             />
             {errors.description && <span className="error-message">{errors.description}</span>}
@@ -275,7 +264,25 @@ function SpotForm() {
         </div>
 
         <div className="form-section">
-          <h2>Set your price</h2>
+          <h2>Create a title for your spot</h2>
+          <p>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+
+          <div className="form-group">
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Name of your spot"
+              className={errors.name ? 'error' : ''}
+            />
+            {errors.name && <span className="error-message">{errors.name}</span>}
+          </div>
+        </div>
+
+        <div className="form-section">
+          <h2>Set a base price for your spot</h2>
+          <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
           <div className="form-group">
             <div className="price-input">
               <span className="currency">$</span>
@@ -284,7 +291,7 @@ function SpotForm() {
                 name="price"
                 value={formData.price}
                 onChange={handleChange}
-                placeholder="Price per night"
+                placeholder="Price per night (USD)"
                 min="0"
                 step="0.01"
                 className={errors.price ? 'error' : ''}
@@ -295,7 +302,8 @@ function SpotForm() {
         </div>
 
         <div className="form-section">
-          <h2>Add photos</h2>
+          <h2>Liven up your spot with photos</h2>
+          <p>Submit a link to at least one photo to publish your spot.</p>
           <div className="form-group">
             <input
               type="url"
@@ -306,6 +314,41 @@ function SpotForm() {
             />
             {errors.images && <span className="error-message">{errors.images}</span>}
           </div>
+          <div className="form-group">
+    <input
+      type="url"
+      value={formData.images[1]}
+      onChange={(e) => handleImageChange(1, e.target.value)}
+      placeholder="Image URL"
+    />
+  </div>
+
+  <div className="form-group">
+    <input
+      type="url"
+      value={formData.images[2]}
+      onChange={(e) => handleImageChange(2, e.target.value)}
+      placeholder="Image URL"
+    />
+  </div>
+
+  <div className="form-group">
+    <input
+      type="url"
+      value={formData.images[3]}
+      onChange={(e) => handleImageChange(3, e.target.value)}
+      placeholder="Image URL"
+    />
+  </div>
+
+  <div className="form-group">
+    <input
+      type="url"
+      value={formData.images[4]}
+      onChange={(e) => handleImageChange(4, e.target.value)}
+      placeholder="Image URL"
+    />
+  </div>
         </div>
 
         <button type="submit" className="submit-button" disabled={isLoading}>
