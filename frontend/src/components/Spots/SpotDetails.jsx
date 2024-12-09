@@ -176,9 +176,9 @@ export default function SpotDetails() {
             <p>{review.review}</p>
            {sessionUser?.id === review.userId && (
   <OpenModalButton 
+    className="delete-review"
     buttonText="Delete"
     modalComponent={<DeleteReviewModal reviewId={review.id} />}
-    className="delete-review"
   />
 )}
           </div>
