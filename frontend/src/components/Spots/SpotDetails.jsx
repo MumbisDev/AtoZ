@@ -82,7 +82,7 @@ const getRatingText = () => {
     const avgRating = reviews.reduce((sum, review) => sum + review.stars, 0) / reviews.length;
     return `${avgRating.toFixed(1)} · ${reviews.length} ${reviews.length === 1 ? 'Review' : 'Reviews'}`;
   } else {
-    if (sessionUser && !isOwner) {
+    if (!isOwner) {
       return 'Be the first to post a review!';
     }
     return 'New';
